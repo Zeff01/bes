@@ -3,6 +3,7 @@ import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Switch } from "react-native";
+import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -38,26 +39,20 @@ const Login = () => {
 
     if (email && password) {
       try {
-        const response = await fetch(
-          "https://bes.outposter.com.au/api/auth/login",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-          }
+        const response = await axios.post(
+          "http://bes.outposter.com.au/api/auth/login",
+          { email, password }
         );
 
-        if (!response.ok) {
+        if (response.status !== 200) {
           throw new Error("Network response was not ok");
         }
 
-        const data = await response.json();
+        const data = response.data;
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("Home");
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error:z", error);
       }
     }
   };
@@ -115,18 +110,18 @@ const Login = () => {
         </View>
 
         <View className="flex-row justify-between items-center mt-4">
-        <View className="flex-row items-center">
-        <Switch
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
-          thumbColor={keepLoggedIn ? "#f5dd4b" : "#f4f3f4"}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={setKeepLoggedIn}
-          value={keepLoggedIn}
-        />
-        <Text className="text-gray-600 text-sm mr-2">
-          Keep me logged in
-        </Text>
-      </View>
+          <View className="flex-row items-center">
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={keepLoggedIn ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={setKeepLoggedIn}
+              value={keepLoggedIn}
+            />
+            <Text className="text-gray-600 text-sm mr-2">
+              Keep me logged in
+            </Text>
+          </View>
 
           <TouchableOpacity>
             <Text className="text-gray-40 text-sm text-primary">
