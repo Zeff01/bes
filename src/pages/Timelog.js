@@ -40,68 +40,6 @@ const Timelog = () => {
     fetchData();
   }, []);
 
-  let startSched = "12:00";
-  const LateHours = (selectedTime) => {
-    const scheduledStartTime = new Date();
-    const [hrs, mins] = startSched.split(":");
-    scheduledStartTime.setHours(hrs, mins);
-
-    const [hours, minutes] = selectedTime.split(":");
-    const selectedDateTime = new Date();
-    selectedDateTime.setHours(parseInt(hours), parseInt(minutes));
-
-    const lateMilliseconds = Math.max(selectedDateTime - scheduledStartTime);
-    const lateHours = lateMilliseconds / (1000 * 60 * 60);
-
-    return Math.max(lateHours, 0).toFixed(2);
-  };
-
-  function calculateOvertime(startTime, endTime) {
-    const startDateTime = new Date();
-    startDateTime.setHours(12, 0, 0, 0);
-
-    const endDateTime = new Date();
-    endDateTime.setHours(4, 0, 0, 0);
-
-    const [startHours, startMinutes] = startTime.split(":");
-    startDateTime.setHours(
-      parseInt(startHours, 10),
-      parseInt(startMinutes, 10)
-    );
-
-    const [endHours, endMinutes] = endTime.split(":");
-    endDateTime.setHours(parseInt(endHours, 10), parseInt(endMinutes, 10));
-
-    if (endDateTime < startDateTime) {
-      endDateTime.setDate(endDateTime.getDate() + 1);
-    }
-
-    const overtimeMilliseconds = Math.max(endDateTime - startDateTime, 0);
-    const overtimeHours = overtimeMilliseconds / (1000 * 60 * 60);
-
-    return overtimeHours.toFixed(2);
-  }
-
-  const clockIn = "15:00";
-  let fixedEndTime = "4:00";
-  let endTime = "4:00";
-
-  const totalLateHours = LateHours(clockIn);
-  const overtimeHours = calculateOvertime(fixedEndTime, endTime);
-  const totalHours = Math.abs(totalLateHours) + Math.abs(overtimeHours);
-
-  // console.log("Total Late Hours:", totalLateHours, "hours");
-  // console.log("Total Overtime Hours:", overtimeHours, "hours");
-  // console.log("Total Hours Worked:", totalHours, "hours");
-
-  const DATA = [
-    {
-      id: 1,
-      name: "",
-      user_id: 56,
-    },
-  ];
-
   const currentDate = new Date();
   const options = {
     year: "numeric",
