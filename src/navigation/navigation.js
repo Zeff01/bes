@@ -15,6 +15,7 @@ function HomeDrawer() {
     <Drawer.Navigator initialRouteName="HomeScreen">
       <Drawer.Screen name="HomeScreen" component={Home} />
       <Drawer.Screen name="Timelog" component={Timelog} />
+
       {/* Add additional Drawer.Screen components for other screens */}
     </Drawer.Navigator>
   );

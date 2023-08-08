@@ -8,6 +8,7 @@ const nowDate = () => {
   let second = d.getSeconds();
   let minute = d.getMinutes();
   let hour = d.getHours();
+  // console.log(hour, second, minute);
   return { second, minute, hour };
 };
 
