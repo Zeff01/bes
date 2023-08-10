@@ -4,19 +4,21 @@ import {
   View,
   Text,
   ScrollView,
-  FlatList,
-  SafeAreaView,
   Image,
+  TouchableOpacity,
+  FlatList,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const Timelog = () => {
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
+
+  const baseURL = "http://bes.outposter.com.au/api/timelogs";
+
   useEffect(() => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
-
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -24,21 +26,18 @@ const Timelog = () => {
         },
       };
 
-      axios
-        .get("http://bes.outposter.com.au/api/timelogs", config)
-        .then((response) => {
-          const responseData = JSON.stringify(response.data);
-          console.log(data);
-          setData(responseData);
-        })
-        .catch((error) => {
-          console.log("Error message:", error.message);
-          console.log("Error config:", error.config);
-        });
+      try {
+        const response = await axios.get(baseURL, config);
+        const res = await response.data;
+        setData(res);
+      } catch (error) {
+        console.log("Error message:", error.message);
+        console.log("Error config:", error.config);
+      }
     };
 
     fetchData();
-  }, []);
+  }, [baseURL]);
 
   const currentDate = new Date();
   const options = {
@@ -105,7 +104,6 @@ const Timelog = () => {
               </Text>
               <Text className="text-white text-[15px]">Yes</Text>
             </View>
-
             <View className="flex-row items-center gap-2">
               <Text className="font-semibold text-xl text-white">User Id:</Text>
               <Text className="text-white text-[15px]">56</Text>
@@ -115,6 +113,90 @@ const Timelog = () => {
               <Text className="text-white text-[15px]">Active</Text>
             </View>
           </View>
+        </View>
+
+        <View className="mt-5">
+          <FlatList
+            data={data.data}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }, index) => (
+              <View key={index}>
+                {Object.keys(item).map((key, innerIndex) => {
+                  const currentItem = item[key];
+                  const id = currentItem.id;
+                  const note = currentItem.note;
+                  const userId = currentItem.user_id;
+                  const startedAt = new Date(currentItem.started_at);
+                  const stoppedAt = new Date(currentItem.stopped_at);
+                  const options = {
+                    hour: "numeric",
+                    minute: "numeric",
+                    hour12: true,
+                  };
+                  const startedAtFormatted = startedAt.toLocaleTimeString(
+                    undefined,
+                    options
+                  );
+                  const stoppedAtFormatted = stoppedAt.toLocaleTimeString(
+                    undefined,
+                    options
+                  );
+                  const createdAt = new Date(
+                    currentItem.created_at
+                  ).toLocaleDateString();
+
+                  return (
+                    <View className="flex px-5 border-2 mb-2 rounded-md border-[#0B646B] py-2">
+                      <View className="flex-row justify-between items-center my-2  ">
+                        <View className="flex-row gap-5 items-center">
+                          <Image
+                            source={require("../../assets/profile.jpg")}
+                            className="w-[50px] h-[40px]"
+                          />
+                          <TouchableOpacity>
+                            <Text className="text-lg font-bold">{userId}</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                      <View
+                        key={innerIndex}
+                        className="mb-4 flex border-t-[1px] pt-2 mt-2"
+                      >
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">Item ID: </Text>
+                          <Text>{id}</Text>
+                        </View>
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">Note:</Text>
+                          <Text>{note}</Text>
+                        </View>
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">User ID:</Text>
+                          <Text>{userId}</Text>
+                        </View>
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">Date:</Text>
+                          <Text>{createdAt}</Text>
+                        </View>
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">Clockin:</Text>
+                          <Text className=" text-green-500">
+                            {startedAtFormatted}
+                          </Text>
+                        </View>
+                        <View className="flex-row gap-2 items-center mb-1">
+                          <Text className="text-lg font-bold">Clockout:</Text>
+                          <Text className="text-md text-[#FF3838]">
+                            {stoppedAtFormatted}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
+          />
         </View>
 
         <View className="gap-2 w-full my-2 ">
@@ -153,7 +235,7 @@ const Timelog = () => {
               <Text className="text-center font-bold text-lg">
                 Rendered Time(Hr/s).
               </Text>
-              <Text className="text-center text-base">{totalHours} Hours</Text>
+              <Text className="text-center text-base">Hours</Text>
             </View>
 
             <View className=" py-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
