@@ -28,7 +28,7 @@ const Timelog = () => {
 
       try {
         const response = await axios.get(baseURL, config);
-        const res = await response.data;
+        const res = response.data;
         setData(res);
       } catch (error) {
         console.log("Error message:", error.message);
@@ -38,6 +38,10 @@ const Timelog = () => {
 
     fetchData();
   }, [baseURL]);
+
+  const total_hrs = data.total_hrs;
+  const total_late_hrs = data.total_late_hrs;
+  const total_ot_hrs = data.total_ot_hrs;
 
   const currentDate = new Date();
   const options = {
@@ -115,7 +119,72 @@ const Timelog = () => {
           </View>
         </View>
 
-        <View className="mt-5">
+        <View className="gap-2 w-full my-2 ">
+          <View className="flex-row space-x-3 mb-1  justify-center w-full px-2">
+            <View className="p-8 border-[#0B646B] border-2 rounded-lg  w-[50%] ">
+              <Icon
+                name="timer-outline"
+                size={30}
+                color="#000"
+                className="mx-auto mb-2"
+              />
+              <Text className="text-center font-bold text-lg">Late(Hr/s).</Text>
+              <Text className="text-center text-base">
+                {total_late_hrs.toFixed(1)}{" "}
+                {total_late_hrs === 1 ? "Hour" : "Hours"}
+              </Text>
+            </View>
+            <View className="p-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
+              <Icon
+                name="alarm-outline"
+                size={30}
+                color="#000"
+                className="mx-auto mb-2"
+              />
+              <Text className="text-center font-bold text-lg">
+                Overtime(Hr/s).
+              </Text>
+              <Text className="text-center text-base">
+                {total_ot_hrs.toFixed(1)}{" "}
+                {total_ot_hrs === 1 ? "Hour" : "Hours"}
+              </Text>
+            </View>
+          </View>
+          <View className="flex-row space-x-3   justify-center w-full px-2">
+            <View className="py-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
+              <Icon
+                name="star-outline"
+                size={30}
+                color="#000"
+                className="mx-auto mb-2"
+              />
+              <Text className="text-center font-bold text-lg">
+                Rendered Time(Hr/s).
+              </Text>
+              <Text className="text-center text-base">
+                {total_hrs.toFixed(1)} {total_hrs === 1 ? "Hour" : "Hours"}
+              </Text>
+            </View>
+
+            <View className=" py-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
+              <Icon
+                name="time-outline"
+                size={30}
+                color="#000"
+                className="mx-auto mb-2"
+              />
+              <Text className="text-center font-bold text-lg">
+                Time Schedule
+              </Text>
+              <Text className="text-center text-base">12:00 PM - 4:00 AM</Text>
+            </View>
+          </View>
+        </View>
+
+        <View className="my-5">
+          <Text className="font-bold text-3xl mb-3 text-[#0B646B]">
+            Time Logs
+          </Text>
           <FlatList
             data={data.data}
             keyExtractor={(item) => item.id}
@@ -146,7 +215,10 @@ const Timelog = () => {
                   ).toLocaleDateString();
 
                   return (
-                    <View className="flex px-5 border-2 mb-2 rounded-md border-[#0B646B] py-2">
+                    <View
+                      className="flex px-5 border-2 mb-2 rounded-md border-[#0B646B] py-2 "
+                      key={key}
+                    >
                       <View className="flex-row justify-between items-center my-2  ">
                         <View className="flex-row gap-5 items-center">
                           <Image
@@ -197,60 +269,6 @@ const Timelog = () => {
               </View>
             )}
           />
-        </View>
-
-        <View className="gap-2 w-full my-2 ">
-          <View className="flex-row space-x-3 mb-1  justify-center w-full px-2">
-            <View className="p-8 border-[#0B646B] border-2 rounded-lg  w-[50%] ">
-              <Icon
-                name="timer-outline"
-                size={30}
-                color="#000"
-                className="mx-auto mb-2"
-              />
-              <Text className="text-center font-bold text-lg">Late(Hr/s).</Text>
-              <Text className="text-center text-base">3 Hours</Text>
-            </View>
-            <View className="p-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
-              <Icon
-                name="alarm-outline"
-                size={30}
-                color="#000"
-                className="mx-auto mb-2"
-              />
-              <Text className="text-center font-bold text-lg">
-                Overtime(Hr/s).
-              </Text>
-              <Text className="text-center text-base">3 Hours</Text>
-            </View>
-          </View>
-          <View className="flex-row space-x-3   justify-center w-full px-2">
-            <View className="py-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
-              <Icon
-                name="star-outline"
-                size={30}
-                color="#000"
-                className="mx-auto mb-2"
-              />
-              <Text className="text-center font-bold text-lg">
-                Rendered Time(Hr/s).
-              </Text>
-              <Text className="text-center text-base">Hours</Text>
-            </View>
-
-            <View className=" py-8 border-[#0B646B] border-2 rounded-lg text-center w-[50%]">
-              <Icon
-                name="time-outline"
-                size={30}
-                color="#000"
-                className="mx-auto mb-2"
-              />
-              <Text className="text-center font-bold text-lg">
-                Time Schedule
-              </Text>
-              <Text className="text-center text-base">12:00 PM - 4:00 AM</Text>
-            </View>
-          </View>
         </View>
       </ScrollView>
     </>
