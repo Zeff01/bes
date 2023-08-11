@@ -25,6 +25,7 @@ function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
+        {/* <Stack.Screen name="Timelog" component={Timelog} /> */}
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen
           name="Home"
