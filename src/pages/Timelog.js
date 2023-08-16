@@ -6,16 +6,15 @@ import TimelogHeader from "../components/TimelogHeader";
 import TimelogInfoBox from "../components/TimelogInfoBox";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItemDetails from "../components/TimelogItemDetails";
-
-
+import { Avatar } from "@react-native-material/core";
 
 const TimelogItem = ({ item }) => {
   return (
     <View className="flex px-2 border-2 mb-2 rounded-md border-[#0B646B] py-2">
       <View className=" justify-between my-2 ">
         <View className="flex-row gap-5 items-center ">
-          <Image
-            source={require("../../assets/profile.jpg")}
+          <Avatar
+            image={require("../../assets/profile.jpg")}
             className="w-[50px] h-[40px] rounded-full"
           />
           <TouchableOpacity>
@@ -76,7 +75,7 @@ const Timelog = () => {
   const formattedDate = currentDate.toLocaleString("en-US", options);
 
   const renderHeader = () => (
-    <View className="p-2">
+    <View className="">
       <TimelogHeader />
       <TimelogInfoBox formattedDate={formattedDate} />
       <TimelogTime
@@ -89,8 +88,9 @@ const Timelog = () => {
   );
 
   return (
-    <View className="flex-1 bg-white px-2">
+    <View className="flex-1 bg-white ">
       <FlatList
+        className="px-3"
         data={flatData}
         renderItem={({ item }) => <TimelogItem item={item} />}
         keyExtractor={(item) => item.id}

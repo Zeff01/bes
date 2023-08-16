@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   return (
-    <View className="gap-2 w-full my-2 ">
+    <View className="gap-2 w-full my-2 px-2 ">
       <View className="flex-row space-x-3 mb-1  justify-center w-full ">
         <View className="p-8 border-[#0B646B] border-2 rounded-lg  w-[50%] ">
           <Icon
