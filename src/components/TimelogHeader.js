@@ -1,5 +1,6 @@
 import React from "react";
 import { Text, View, Image } from "react-native";
+import { Avatar } from "@react-native-material/core";
 
 const TimelogHeader = () => {
   return (
@@ -13,8 +14,8 @@ const TimelogHeader = () => {
           client information
         </Text>
       </View>
-      <Image
-        source={require("../../assets/profile.jpg")}
+      <Avatar
+        image={require("../../assets/profile.jpg")}
         className="w-[70px] h-[70px] rounded-full"
       />
     </View>

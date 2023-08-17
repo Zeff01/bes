@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, TextInput, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity } from "react-native";
+import { TextInput, Button } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Switch } from "react-native";
@@ -80,9 +81,10 @@ const Login = () => {
 
         <View className="border-t border-gray-300 my-2"></View>
 
-        <View className="border border-gray-300 p-2 rounded-lg mb-2">
+        <View className=" mb-2">
           <TextInput
-            placeholder="Email address"
+            color="#0B646B"
+            label="Email address"
             placeholderTextColor="#999999"
             onChangeText={handleEmailChange}
             value={email}
@@ -94,9 +96,10 @@ const Login = () => {
           ) : null}
         </View>
 
-        <View className="border border-gray-300 p-2 rounded-lg">
+        <View className="">
           <TextInput
-            placeholder="Password"
+            color="#0B646B"
+            label="Password"
             placeholderTextColor="#999999"
             // secureTextEntry
             onChangeText={handlePasswordChange}
@@ -130,12 +133,18 @@ const Login = () => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           className="mt-4 bg-primary p-2 rounded-lg shadow-xl"
           onPress={handleLogin}
         >
           <Text className="text-center text-lg text-white">Login</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+        <Button
+          title="Login"
+          onPress={handleLogin}
+          color="#009598"
+          tintColor="white"
+        ></Button>
       </View>
 
       <View className="p-4 border-t border-gray-300 mx-4 mt-4">

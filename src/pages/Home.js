@@ -1,7 +1,33 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { View, TouchableOpacity, Text } from "react-native";
-import AnalogClock from "react-native-clock-analog";
+import { View, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AnalogClockCard from "../components/AnalogClockCard";
+import NoteCard from "../components/NoteCard";
+import NoteHeader from "../components/NoteHeader";
+import HomeHeader from "../components/HomeHeader";
+import HomeDate from "../components/HomeDate";
+import { ScrollView } from "react-native";
+
+const data = [
+  {
+    title: "Note 1",
+  },
+  {
+    title: "Note 2",
+  },
+  {
+    title: "Note 3",
+  },
+  {
+    title: "Note 4",
+  },
+  {
+    title: "Note 5",
+  },
+  {
+    title: "Note 6",
+  },
+];
 
 const nowDate = () => {
   const d = new Date();
@@ -82,7 +108,7 @@ const Home = () => {
       try {
         const token = await AsyncStorage.getItem("@auth_token");
         if (token) {
-          console.log("Token already exists in AsyncStorage", token);
+          // console.log("Token already exists in AsyncStorage", token);
         }
       } catch (e) {
         console.error(e);
@@ -92,32 +118,53 @@ const Home = () => {
     checkToken();
   }, []);
 
+  const currentDate = new Date();
+  const options = { year: "numeric", month: "long", day: "numeric" };
+  const formattedDate = currentDate.toLocaleString("en-US", options);
+
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
+  const today = new Date();
+  const dayIndex = today.getDay();
+  const dayName = daysOfWeek[dayIndex];
+
+  // #0B646B
+
   return (
-    <View className="flex-1 items-center justify-center bg-gray-100 p-8">
-      <AnalogClock
+    <View className="flex-1   bg-white px-3">
+      <View className="w-full flex justify-between items-center">
+        <HomeHeader />
+        <HomeDate dayName={dayName} formattedDate={formattedDate} />
+      </View>
+      <AnalogClockCard
         key={key}
-        colorClock="#ffffff"
-        colorNumber="#000000"
-        colorCenter="#009598"
-        colorSeconds="#009598"
-        colorHour="#333333"
-        colorMinutes="#000000"
-        autostart={false}
-        showSeconds
         hour={hour}
-        minutes={minute}
-        seconds={second}
+        minute={minute}
+        second={second}
+        handleClockInOut={handleClockInOut}
+        isClockIn={isClockIn}
       />
-      <TouchableOpacity
-        className={`mt-4 px-6 py-4 ${
-          isClockIn ? "bg-red-500" : "bg-primary"
-        } rounded-lg`}
-        onPress={handleClockInOut}
-      >
-        <Text className="text-white font-bold">
-          {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
-        </Text>
-      </TouchableOpacity>
+
+      <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
+        <NoteHeader headerTitle="Notes" />
+        <FlatList
+          keyExtractor={(item) => item.id}
+          data={data}
+          renderItem={({ item }) => (
+            <ScrollView className="mb-3">
+              <NoteCard title={item.title} />
+            </ScrollView>
+          )}
+        />
+      </View>
     </View>
   );
 };
