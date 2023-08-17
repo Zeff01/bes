@@ -101,7 +101,7 @@ const Login = () => {
             color="#0B646B"
             label="Password"
             placeholderTextColor="#999999"
-            // secureTextEntry
+            secureTextEntry
             onChangeText={handlePasswordChange}
             value={password}
           />

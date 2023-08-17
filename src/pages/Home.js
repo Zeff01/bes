@@ -1,12 +1,11 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AnalogClockCard from "../components/AnalogClockCard";
 import NoteCard from "../components/NoteCard";
 import NoteHeader from "../components/NoteHeader";
 import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
-import { ScrollView } from "react-native";
 
 const data = [
   {
@@ -34,29 +33,30 @@ const nowDate = () => {
   let second = d.getSeconds();
   let minute = d.getMinutes();
   let hour = d.getHours();
-  // console.log(hour, second, minute);
   return { second, minute, hour };
 };
 
 const useNowTimer = () => {
-  const { second, minute, hour } = nowDate();
-
-  const [state, setState] = useState({
-    second,
-    minute,
-    hour,
-  });
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      const { second, minute, hour } = nowDate();
-
-      setState({ second, minute, hour });
-    }, 1000);
-
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  const updateTime = () => {
+    const { second, minute, hour } = nowDate();
+    setState({ second, minute, hour });
+  };
+
+  const nowDate = () => {
+    const d = new Date();
+    return {
+      second: d.getSeconds(),
+      minute: d.getMinutes(),
+      hour: d.getHours(),
+    };
+  };
+
+  const [state, setState] = useState(nowDate());
   return state;
 };
 
@@ -71,6 +71,31 @@ const ClockInProvider = ({ children }) => {
     </ClockInContext.Provider>
   );
 };
+
+const renderClockCard = (
+  key,
+  hour,
+  minute,
+  second,
+  handleClockInOut,
+  isClockIn
+) => (
+  <AnalogClockCard
+    key={key}
+    hour={hour}
+    minute={minute}
+    second={second}
+    handleClockInOut={handleClockInOut}
+    isClockIn={isClockIn}
+  />
+);
+
+const renderNoteCard = (title) => (
+  <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
+    <NoteHeader headerTitle="Notes" />
+    <NoteCard title={title} />
+  </View>
+);
 
 const Home = () => {
   const { second, minute, hour } = useNowTimer();
@@ -118,11 +143,7 @@ const Home = () => {
     checkToken();
   }, []);
 
-  const currentDate = new Date();
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattedDate = currentDate.toLocaleString("en-US", options);
-
-  const daysOfWeek = [
+  const dayName = [
     "Sunday",
     "Monday",
     "Tuesday",
@@ -130,41 +151,35 @@ const Home = () => {
     "Thursday",
     "Friday",
     "Saturday",
-  ];
+  ][new Date().getDay()];
 
-  const today = new Date();
-  const dayIndex = today.getDay();
-  const dayName = daysOfWeek[dayIndex];
-
-  // #0B646B
+  const formattedDate = new Date().toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 
   return (
     <View className="flex-1   bg-white px-3">
-      <View className="w-full flex justify-between items-center">
-        <HomeHeader />
-        <HomeDate dayName={dayName} formattedDate={formattedDate} />
-      </View>
-      <AnalogClockCard
-        key={key}
-        hour={hour}
-        minute={minute}
-        second={second}
-        handleClockInOut={handleClockInOut}
-        isClockIn={isClockIn}
+      <HomeHeader />
+      <HomeDate dayName={dayName} formattedDate={formattedDate} />
+      <FlatList
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+        data={[{ type: "clock" }, ...data]}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) =>
+          item.type === "clock"
+            ? renderClockCard(
+                key,
+                hour,
+                minute,
+                second,
+                handleClockInOut,
+                isClockIn
+              )
+            : renderNoteCard(item.title)
+        }
       />
-
-      <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
-        <NoteHeader headerTitle="Notes" />
-        <FlatList
-          keyExtractor={(item) => item.id}
-          data={data}
-          renderItem={({ item }) => (
-            <ScrollView className="mb-3">
-              <NoteCard title={item.title} />
-            </ScrollView>
-          )}
-        />
-      </View>
     </View>
   );
 };
