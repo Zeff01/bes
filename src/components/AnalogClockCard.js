@@ -3,7 +3,6 @@ import AnalogClock from "react-native-clock-analog";
 import TaskCard from "./TaskCard";
 
 export default function AnalogClockCard({
-  key,
   hour,
   minute,
   second,
@@ -16,7 +15,7 @@ export default function AnalogClockCard({
         <View className="items-center">
           <AnalogClock
             size={160}
-            key={key}
+            // key={key}
             colorClock="#fff"
             colorNumber="black "
             colorCenter="black"

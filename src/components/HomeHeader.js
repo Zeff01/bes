@@ -1,7 +1,6 @@
 import { View, Text, Image } from "react-native";
-import { Avatar } from "@react-native-material/core";
 
-export default function HomeHeader({ dayName, formattedDate }) {
+export default function HomeHeader({ name }) {
   return (
     <>
       <View className="w-full mb-2 flex-row justify-between items-center">
@@ -10,11 +9,11 @@ export default function HomeHeader({ dayName, formattedDate }) {
             source={require("../../assets/outposter_logo.png")}
             className="w-[250px] h-[50px] justify-end"
           />
-          <Text className="text-lg font-bold">Good PM, Jzeff Zomers</Text>
+          <Text className="text-lg font-bold">Good PM, {name}</Text>
         </View>
 
-        <Avatar
-          image={require("../../assets/profile.jpg")}
+        <Image
+          source={require("../../assets/profile.jpg")}
           className="w-[70px] h-[70px] rounded-full"
         />
       </View>

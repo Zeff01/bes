@@ -1,12 +1,11 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
+import { Button } from "@react-native-material/core";
 
 export default function NoteHeader({ headerTitle }) {
   return (
     <View className="flex-row justify-between items-center mb-3 border-b  pb-5">
-      <Text className="text-black font-bold text-2xl">{headerTitle}</Text>
-      <TouchableOpacity>
-        <Text className="border  py-2 px-2 rounded-lg">Create Notes</Text>
-      </TouchableOpacity>
+      <Text className="text-black font-bold text-xl">{headerTitle}</Text>
+      <Button title="Create Notes" color="#5B5B5B" tintColor="white" />
     </View>
   );
 }

@@ -7,8 +7,8 @@ import { Switch } from "react-native";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("jzeff@outposter.com.au");
+  const [password, setPassword] = useState("op_bes_0098");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");

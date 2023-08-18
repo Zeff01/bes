@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { View, FlatList, ScrollView } from "react-native";
+import { View, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AnalogClockCard from "../components/AnalogClockCard";
 import NoteCard from "../components/NoteCard";
@@ -161,7 +161,7 @@ const Home = () => {
 
   return (
     <View className="flex-1   bg-white px-3">
-      <HomeHeader />
+      <HomeHeader name="Jzeff Somers" />
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
