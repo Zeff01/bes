@@ -6,6 +6,7 @@ import NoteCard from "../components/NoteCard";
 import NoteHeader from "../components/NoteHeader";
 import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
+import axios from "axios";
 
 const data = [
   {
@@ -97,7 +98,13 @@ const renderNoteCard = (title) => (
   </View>
 );
 
+
+
+
+
 const Home = () => {
+  const baseURL = "http://bes.outposter.com.au/api/auth/user"
+  const [name, setName] = useState("")
   const { second, minute, hour } = useNowTimer();
   const key = `${hour}:${minute}:${second}`;
 
@@ -134,6 +141,7 @@ const Home = () => {
         const token = await AsyncStorage.getItem("@auth_token");
         if (token) {
           // console.log("Token already exists in AsyncStorage", token);
+          console.log(token)
         }
       } catch (e) {
         console.error(e);
@@ -159,9 +167,28 @@ const Home = () => {
     day: "numeric",
   });
 
+  
+
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("@auth_token");
+      const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      const res = await axios.get(baseURL, config)
+      setName(res.data.name)
+    }
+    fetchData()
+  },[])
+
+
   return (
     <View className="flex-1   bg-white px-3">
-      <HomeHeader name="Jzeff Somers" />
+      <HomeHeader name={name} />
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
       <FlatList
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}

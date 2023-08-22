@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import { api_get_user } from "../api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
+  const [data, setData] = useState([])
+
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("@auth_token");
+      const res = await api_get_user({token})
+      setData(res)
+    }
+    fetchData()
+  },[])
+
   return (
     <View className="gap-2 w-full my-2 px-2 ">
       <View className="flex-row space-x-3 mb-1  justify-center w-full ">
@@ -60,7 +75,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
           <Text className="text-center font-bold text-[18px]">
             Time Schedule
           </Text>
-          <Text className="text-center text-base">12:00 PM - 4:00 AM</Text>
+          <Text className="text-center text-base">{data.time_in} - {data.time_out}</Text>
         </View>
       </View>
     </View>

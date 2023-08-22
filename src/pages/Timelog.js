@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, FlatList } from "react-native";
+import { View, Text,  TouchableOpacity, FlatList } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TimelogHeader from "../components/TimelogHeader";
@@ -7,6 +7,7 @@ import TimelogInfoBox from "../components/TimelogInfoBox";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItemDetails from "../components/TimelogItemDetails";
 import { Avatar } from "@react-native-material/core";
+
 
 const TimelogItem = ({ item }) => {
   return (
@@ -60,6 +61,7 @@ const Timelog = () => {
         };
         const response = await axios.get(baseURL, config);
         setData(response.data);
+        
       } catch (error) {
         console.error("Error fetching timelogs:", error);
       }
@@ -70,14 +72,16 @@ const Timelog = () => {
 
   const flatData = data.data ? data.data.flat() : [];
 
-  const currentDate = new Date();
-  const options = { year: "numeric", month: "long", day: "numeric" };
-  const formattedDate = currentDate.toLocaleString("en-US", options);
+
+   
+
+
+  
 
   const renderHeader = () => (
     <View className="">
       <TimelogHeader />
-      <TimelogInfoBox formattedDate={formattedDate} />
+      <TimelogInfoBox />
       <TimelogTime
         total_ot_hrs={data.total_ot_hrs}
         total_hrs={data.total_hrs}

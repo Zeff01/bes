@@ -1,28 +1,54 @@
-import React from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import { api_get_user } from "../api";
 
-const TimelogInfoBox = ({ formattedDate }) => {
+const TimelogInfoBox = () => {
+  const [data, setData] = useState([])
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("@auth_token");
+      const data = await api_get_user({token})
+      setData(data)
+    }
+    fetchData()
+  },[])
+
   return (
     <View className="w-full  rounded-lg  py-3 bg-[#0B646B] shadow">
       <View className="px-4 flex space-y-1 ">
         <View className="flex-row justify-between items-center">
           <View>
-            <Text className="text-3xl font-bold leading-[30px] pt-2 text-white">
-              Jzeff Somers
+            <Text className="text-2xl mb-2 font-bold  pt-2 text-white">
+              {data.name} (id: {data.id})
             </Text>
             <Text className="leading-[14px] text-md text-white ">
-              Front End Developer
+              {data.position} - {data.job_type}
             </Text>
           </View>
           <View>
             <Text className="text-white text-lg bg-[#137c84] font-bold px-2 py-1 rounded-full">
-              {formattedDate}
+              {data.role}
             </Text>
           </View>
         </View>
         <View className="flex-row items-center gap-2">
+          <Text className="font-semibold text-xl text-white">Birthdate:</Text>
+          <Text className="text-white text-[15px]">{data.birth_date}</Text>
+        </View>
+        <View className="flex-row items-center gap-2">
+          <Text className="font-semibold text-xl text-white">Email: </Text>
+          <Text className="text-white text-[15px]">{data.email}</Text>
+        </View>
+        <View className="flex-row items-center gap-2">
+          <Text className="font-semibold text-xl text-white">Phone No:</Text>
+          <Text className="text-white text-[15px]">{data.phone}</Text>
+        </View>
+       
+        <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Registered:</Text>
-          <Text className="text-white text-[15px]">2023-06-13 15:13:20</Text>
+          <Text className="text-white text-[15px]">{data.email_verified_at}</Text>
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">
@@ -36,11 +62,11 @@ const TimelogInfoBox = ({ formattedDate }) => {
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">User Id:</Text>
-          <Text className="text-white text-[15px]">56</Text>
+          <Text className="text-white text-[15px]">{data.id}</Text>
         </View>
         <View className="flex-row items-center gap-2 ">
           <Text className="font-semibold text-xl text-white">Status:</Text>
-          <Text className="text-white text-[15px]">Active</Text>
+          <Text className="text-white text-[15px]">{data.status}</Text>
         </View>
       </View>
     </View>

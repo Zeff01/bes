@@ -17,11 +17,11 @@ export default function AnalogClockCard({
             size={160}
             // key={key}
             colorClock="#fff"
-            colorNumber="black "
-            colorCenter="black"
-            colorSeconds="black"
-            colorHour="black"
-            colorMinutes="black"
+            colorNumber="#000000 "
+            colorCenter="#000000"
+            colorSeconds="#000000"
+            colorHour="#000000"
+            colorMinutes="#000000"
             autostart={false}
             showSeconds
             hour={hour}
