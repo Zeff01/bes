@@ -58,14 +58,11 @@ const useNowTimer = () => {
       minute: d.getMinutes(),
       hour: d.getHours(),
     };
-    
   };
 
   const [state, setState] = useState(nowDate());
   return state;
 };
-
-
 
 const ClockInContext = createContext();
 
@@ -104,13 +101,9 @@ const renderNoteCard = (title) => (
   </View>
 );
 
-
-
-
-
 const Home = () => {
-  const baseURL = "http://bes.outposter.com.au/api/auth/user"
-  const [data, setData] = useState([])
+  const baseURL = "http://bes.outposter.com.au/api/auth/user";
+  const [data, setData] = useState([]);
   const { second, minute, hour } = useNowTimer();
   const key = `${hour}:${minute}:${second}`;
 
@@ -155,7 +148,7 @@ const Home = () => {
         const token = await AsyncStorage.getItem("@auth_token");
         if (token) {
           // console.log("Token already exists in AsyncStorage", token);
-          console.log(token)
+          console.log(token);
         }
       } catch (e) {
         console.error(e);
@@ -181,26 +174,20 @@ const Home = () => {
     day: "numeric",
   });
 
-  
-
-
-  useEffect(()=> {
+  useEffect(() => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
       const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
-      const res = await axios.get(baseURL, config)
-      setData(res.data)
-      
-    }
-    fetchData()
-  },[])
-
-
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await axios.get(baseURL, config);
+      setData(res.data);
+    };
+    fetchData();
+  }, []);
 
   // <FlatList
   //       contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
@@ -222,10 +209,10 @@ const Home = () => {
 
   return (
     <ScrollView className="flex-1   bg-white px-3">
-      <HomeHeader name={data.name}/>
+      <HomeHeader name={data.name} />
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
       <View className=" bg-[#0B646B] rounded-xl py-10 px-3 w-full h-auto items-center">
-        <View className="items-center shadow-xl " >
+        <View className="items-center shadow-xl ">
           <AnalogClock
             size={200}
             key={key}
@@ -241,7 +228,9 @@ const Home = () => {
             minutes={minute}
             seconds={second}
           />
-           <Text className="text-gray-400 mt-5 font-semibold text-xl">Schedule: {data.time_in} - {data.time_out}</Text>
+          <Text className="text-gray-400 mt-5 font-semibold text-xl">
+            Schedule: {data.time_in} - {data.time_out}
+          </Text>
           <TouchableOpacity
             className={`mt-6 px-[50px] py-4  ${
               isClockIn ? "bg-red-500" : "bg-white "
@@ -253,11 +242,13 @@ const Home = () => {
             </Text>
           </TouchableOpacity>
           <Text className="my-5 text-3xl font-bold text-gray-300 ">MNL</Text>
-         <Text className="text-gray-300  font-semibold text-6xl">{formattedTime}</Text>
+          <Text className="text-gray-300  font-semibold text-6xl">
+            {formattedTime}
+          </Text>
         </View>
       </View>
       <View className="mt-5">
-        <TaskCard/>
+        <TaskCard />
       </View>
     </ScrollView>
   );
