@@ -1,5 +1,5 @@
-import { Text } from "react-native";
+import { ListItem } from "@react-native-material/core";
 
 export default function Task({ task }) {
-  return <Text className="mb-1 text-white font-semibold text-lg">{task}</Text>;
+  return <ListItem  title="Task" secondaryText="Description....">{task}</ListItem>;
 }

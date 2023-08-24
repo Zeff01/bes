@@ -3,8 +3,8 @@ import Task from "./Task";
 
 export default function TaskCard() {
   return (
-    <View className="bg-[#0B646B]  rounded-xl py-5 px-3 w-full h-[265px]">
-      <Text className="text-white font-bold text-xl">My Tasks</Text>
+    <View className=" rounded-xl py-5 w-full h-[265px] border-2 border-[#0B646B] px-5">
+      <Text className="text-[#0B646B] font-bold text-xl">My Tasks</Text>
       <ScrollView className="mt-2">
         <Task task="Task 1" />
         <Task task="Task 2" />

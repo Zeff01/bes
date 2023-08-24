@@ -8,6 +8,7 @@ export default function AnalogClockCard({
   second,
   handleClockInOut,
   isClockIn,
+  key
 }) {
   return (
     <View className="w-full h-auto  flex-row gap-4 pr-4">
@@ -15,13 +16,13 @@ export default function AnalogClockCard({
         <View className="items-center">
           <AnalogClock
             size={160}
-            // key={key}
+            key={key}
             colorClock="#fff"
-            colorNumber="black "
-            colorCenter="black"
-            colorSeconds="black"
-            colorHour="black"
-            colorMinutes="black"
+            colorNumber="#000000 "
+            colorCenter="#000000"
+            colorSeconds="#000000"
+            colorHour="#000000"
+            colorMinutes="#000000"
             autostart={false}
             showSeconds
             hour={hour}
