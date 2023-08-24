@@ -13,7 +13,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             color="#000"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-lg">Late(Hr/s).</Text>
+          <Text className="text-center font-bold text-[18px]">Late(Hr/s).</Text>
           <Text className="text-center text-base">
             {total_late_hrs?.toFixed(1)}
             {total_late_hrs === 1 ? "Hour" : "Hours"}
@@ -26,7 +26,9 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             color="#000"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-lg">Overtime(Hr/s).</Text>
+          <Text className="text-center font-bold text-[18px]">
+            Overtime(Hr/s).
+          </Text>
           <Text className="text-center text-base">
             {total_ot_hrs?.toFixed(1)} {total_ot_hrs === 1 ? "Hour" : "Hours"}
           </Text>
@@ -40,7 +42,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             color="#000"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-lg">
+          <Text className="text-center font-bold text-[18px]">
             Rendered Time(Hr/s).
           </Text>
           <Text className="text-center text-base">
@@ -55,7 +57,9 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             color="#000"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-lg">Time Schedule</Text>
+          <Text className="text-center font-bold text-[18px]">
+            Time Schedule
+          </Text>
           <Text className="text-center text-base">12:00 PM - 4:00 AM</Text>
         </View>
       </View>
