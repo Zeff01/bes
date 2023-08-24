@@ -1,12 +1,15 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { View, FlatList } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AnalogClockCard from "../components/AnalogClockCard";
+// import AnalogClockCard from "../components/AnalogClockCard";
+import AnalogClock from "react-native-clock-analog";
 import NoteCard from "../components/NoteCard";
 import NoteHeader from "../components/NoteHeader";
 import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
 import axios from "axios";
+import TaskCard from "../components/TaskCard";
+import { ScrollView } from "react-native";
 
 const data = [
   {
@@ -55,11 +58,14 @@ const useNowTimer = () => {
       minute: d.getMinutes(),
       hour: d.getHours(),
     };
+    
   };
 
   const [state, setState] = useState(nowDate());
   return state;
 };
+
+
 
 const ClockInContext = createContext();
 
@@ -73,23 +79,23 @@ const ClockInProvider = ({ children }) => {
   );
 };
 
-const renderClockCard = (
-  key,
-  hour,
-  minute,
-  second,
-  handleClockInOut,
-  isClockIn
-) => (
-  <AnalogClockCard
-    key={key}
-    hour={hour}
-    minute={minute}
-    second={second}
-    handleClockInOut={handleClockInOut}
-    isClockIn={isClockIn}
-  />
-);
+// const renderClockCard = (
+//   key,
+//   hour,
+//   minute,
+//   second,
+//   handleClockInOut,
+//   isClockIn
+// ) => (
+//   <AnalogClockCard
+//     key={key}
+//     hour={hour}
+//     minute={minute}
+//     second={second}
+//     handleClockInOut={handleClockInOut}
+//     isClockIn={isClockIn}
+//   />
+// );
 
 const renderNoteCard = (title) => (
   <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
@@ -104,9 +110,17 @@ const renderNoteCard = (title) => (
 
 const Home = () => {
   const baseURL = "http://bes.outposter.com.au/api/auth/user"
-  const [name, setName] = useState("")
+  const [data, setData] = useState([])
   const { second, minute, hour } = useNowTimer();
   const key = `${hour}:${minute}:${second}`;
+
+  function formatTime(hour, minute) {
+    const period = hour >= 12 ? " PM" : " AM";
+    const formattedHour = hour % 12 === 0 ? 12 : hour % 12;
+    const formattedMinute = minute.toString().padStart(2, "0");
+    return `${formattedHour}:${formattedMinute}${period}`;
+  }
+  const formattedTime = formatTime(hour, minute);
 
   const { isClockIn, setIsClockIn } = useContext(ClockInContext);
 
@@ -180,34 +194,72 @@ const Home = () => {
           },
         };
       const res = await axios.get(baseURL, config)
-      setName(res.data.name)
+      setData(res.data)
+      
     }
     fetchData()
   },[])
 
 
+
+  // <FlatList
+  //       contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
+  //       data={[{ type: "clock" }, ...data]}
+  //       keyExtractor={(item, index) => index.toString()}
+  //       renderItem={({ item }) =>
+  //         item.type === "clock"
+  //           ? renderClockCard(
+  //               key,
+  //               hour,
+  //               minute,
+  //               second,
+  //               handleClockInOut,
+  //               isClockIn
+  //             )
+  //           : renderNoteCard(item.title)
+  //       }
+  //     />
+
   return (
-    <View className="flex-1   bg-white px-3">
-      <HomeHeader name={name} />
+    <ScrollView className="flex-1   bg-white px-3">
+      <HomeHeader name={data.name}/>
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
-      <FlatList
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-        data={[{ type: "clock" }, ...data]}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) =>
-          item.type === "clock"
-            ? renderClockCard(
-                key,
-                hour,
-                minute,
-                second,
-                handleClockInOut,
-                isClockIn
-              )
-            : renderNoteCard(item.title)
-        }
-      />
-    </View>
+      <View className=" bg-[#0B646B] rounded-xl py-10 px-3 w-full h-auto items-center">
+        <View className="items-center shadow-xl " >
+          <AnalogClock
+            size={200}
+            key={key}
+            colorClock="#fff"
+            colorNumber="#000000 "
+            colorCenter="#000000"
+            colorSeconds="#000000"
+            colorHour="#000000"
+            colorMinutes="#000000"
+            autostart={false}
+            showSeconds
+            hour={hour}
+            minutes={minute}
+            seconds={second}
+          />
+           <Text className="text-gray-400 mt-5 font-semibold text-xl">Schedule: {data.time_in} - {data.time_out}</Text>
+          <TouchableOpacity
+            className={`mt-6 px-[50px] py-4  ${
+              isClockIn ? "bg-red-500" : "bg-white "
+            } rounded-sm`}
+            onPress={handleClockInOut}
+          >
+            <Text className="text-black font-bold">
+              {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
+            </Text>
+          </TouchableOpacity>
+          <Text className="my-5 text-3xl font-bold text-gray-300 ">MNL</Text>
+         <Text className="text-gray-300  font-semibold text-6xl">{formattedTime}</Text>
+        </View>
+      </View>
+      <View className="mt-5">
+        <TaskCard/>
+      </View>
+    </ScrollView>
   );
 };
 
