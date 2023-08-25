@@ -3,20 +3,30 @@ import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { api_get_user } from "../api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 
 const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   const [data, setData] = useState([])
+  const baseURL = "http://bes.outposter.com.au/api/auth/user"
 
-
-  useEffect(()=>{
+  useEffect(()=> {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
-      const res = await api_get_user({token})
-      setData(res)
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+           Authorization: `Bearer ${token}`,
+          },
+      };
+      const res = await axios.get(baseURL, config)
+      const data = await res.data
+      setData(data)
     }
     fetchData()
   },[])
+
+  
 
   return (
     <View className="gap-2 w-full my-2 px-2 ">

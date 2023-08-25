@@ -3,7 +3,8 @@ import axios from "axios";
 
 const baseURL = "http://bes.outposter.com.au/api/auth/user"
 
-export async function api_get_user({token}) {
+
+export async function api_get_user(token) {
   const config = {
     headers: {
       "Content-Type": "application/json",

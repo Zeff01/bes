@@ -1,20 +1,28 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { api_get_user } from "../api";
+import axios from "axios";
+const baseURL = "http://bes.outposter.com.au/api/auth/user"
 
 const TimelogInfoBox = () => {
   const [data, setData] = useState([])
+  
 
-  useEffect(()=>{
+  useEffect(()=> {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
-      const data = await api_get_user({token})
-      setData(data)
+      const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      const res = await axios.get(baseURL, config)
+      setData(res.data)
     }
     fetchData()
   },[])
-
+  
   return (
     <View className="w-full  rounded-lg  py-3 bg-[#0B646B] shadow">
       <View className="px-4 flex space-y-1 ">

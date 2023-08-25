@@ -7,15 +7,33 @@ import TimelogInfoBox from "../components/TimelogInfoBox";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItemDetails from "../components/TimelogItemDetails";
 import { Avatar } from "@react-native-material/core";
+import { Image } from "react-native";
 
 
 const TimelogItem = ({ item }) => {
+  const [data, setData] = useState([])
+  const baseURL = "http://bes.outposter.com.au/api/auth/user";
+
+  useEffect(()=> {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem("@auth_token");
+      const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      const res = await axios.get(baseURL, config)
+      setData(res.data)
+    }
+    fetchData()
+  },[])
   return (
     <View className="flex px-2 border-2 mb-2 rounded-md border-[#0B646B] py-2">
       <View className=" justify-between my-2">
         <View className="flex-row gap-5 items-center ">
-          <Avatar
-            image={require("../../assets/profile.jpg")}
+          <Image
+            src={data.avatar}
             className="w-[50px] h-[40px] rounded-full"
           />
           <TouchableOpacity>
@@ -73,10 +91,6 @@ const Timelog = () => {
   const flatData = data.data ? data.data.flat() : [];
 
 
-   
-
-
-  
 
   const renderHeader = () => (
     <View className="">
