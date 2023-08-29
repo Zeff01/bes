@@ -36,7 +36,7 @@ const TimelogHeader = () => {
         </Text>
       </View>
       <Image
-        src={data.avatar}
+        src={`https://bes.outposter.com.au/images/avatars/${data.avatar}`}
         className="w-[70px] h-[70px] rounded-full"
       />
     </View>

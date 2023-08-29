@@ -13,7 +13,7 @@ export default function HomeHeader({ name,src }) {
         </View>
 
         <Image
-          src={src}
+          src={`https://bes.outposter.com.au/images/avatars/${src}`}
           className="w-[70px] h-[70px] rounded-full"
         />
       </View>
