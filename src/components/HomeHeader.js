@@ -1,6 +1,6 @@
 import { View, Text, Image } from "react-native";
 
-export default function HomeHeader({ name }) {
+export default function HomeHeader({ name,src }) {
   return (
     <>
       <View className="w-full mb-2 flex-row justify-between items-center">
@@ -13,7 +13,7 @@ export default function HomeHeader({ name }) {
         </View>
 
         <Image
-          source={require("../../assets/profile.jpg")}
+          src={`https://bes.outposter.com.au/images/avatars/${src}`}
           className="w-[70px] h-[70px] rounded-full"
         />
       </View>

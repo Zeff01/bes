@@ -1,19 +1,64 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
-import { api_get_user } from "../api";
+import axios from "axios";
+import { format } from "date-fns";
+import formatDateAndExtractParts from "../utils"
+import formatDate from "../utils";
+
+const baseURL = "http://bes.outposter.com.au/api/auth/user";
 
 const TimelogInfoBox = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
-      const data = await api_get_user({token})
-      setData(data)
-    }
-    fetchData()
-  },[])
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const res = await axios.get(baseURL, config);
+      setData(res.data);
+    };
+    fetchData();
+  }, [baseURL]);
+  // const dateTimeString = data.email_verified_at;
+  // const datePart = dateTimeString.split("T")[0];
+  // const [year, month, day] = datePart.split("-");
+  // const formattedRegister = format(new Date(month, day, year), "MMMM d, yyyy");
+
+  // const {year, day, month} = formatDateAndExtractParts(data.email_verified_at)
+  // const register = '2023-06-27T03:46:54.000000Z'
+  // const dateRegister = formatDateAndExtractParts(register)
+  // const dateLatest = formatDateAndExtractParts(data.updated_at)
+  // const birtDate = formatDateAndExtractParts(data.birth_date)
+
+  function formatDate(inputDate) {
+    const date = new Date(inputDate);
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  }
+  
+  const birthDate = data?.birth_date;
+  const registerDate = data?.email_verified_at
+  const latestAct = data?.updated_at
+
+  
+
+  const formattedBirthDate = formatDate(birthDate);
+  const formattedRegistrationDate = formatDate(registerDate)
+  const formattedLatestAct = formatDate(latestAct)
+
+  
+  console.log(formattedBirthDate)
+  console.log(formattedRegistrationDate)
+  console.log(formattedLatestAct)
+  
+
+
 
   return (
     <View className="w-full  rounded-lg  py-3 bg-[#0B646B] shadow">
@@ -21,7 +66,7 @@ const TimelogInfoBox = () => {
         <View className="flex-row justify-between items-center">
           <View>
             <Text className="text-2xl mb-2 font-bold  pt-2 text-white">
-              {data.name} (id: {data.id})
+              {data.name}
             </Text>
             <Text className="leading-[14px] text-md text-white ">
               {data.position} - {data.job_type}
@@ -35,7 +80,7 @@ const TimelogInfoBox = () => {
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Birthdate:</Text>
-          <Text className="text-white text-[15px]">{data.birth_date}</Text>
+          <Text className="text-white text-[15px]">{ formattedBirthDate === undefined ||  "Invalid Date" ? formattedBirthDate : "asd"}</Text>
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Email: </Text>
@@ -45,16 +90,16 @@ const TimelogInfoBox = () => {
           <Text className="font-semibold text-xl text-white">Phone No:</Text>
           <Text className="text-white text-[15px]">{data.phone}</Text>
         </View>
-       
+
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Registered:</Text>
-          <Text className="text-white text-[15px]">{data.email_verified_at}</Text>
+          <Text className="text-white text-[15px]">{ formattedBirthDate === undefined ||  "Invalid Date" ?  formattedRegistrationDate : ""} </Text>
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">
             Latest Activity:
           </Text>
-          <Text className="text-white text-[15px]">2023-07-27 13:32:06</Text>
+          <Text className="text-white text-[15px]">{ formattedBirthDate === undefined ||  "Invalid Date" ? formattedLatestAct: "" }</Text>
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Verified:</Text>

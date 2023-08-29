@@ -134,7 +134,7 @@ const Home = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
+      console.log(token)
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -209,7 +209,7 @@ const Home = () => {
 
   return (
     <ScrollView className="flex-1   bg-white px-3">
-      <HomeHeader name={data.name} />
+      <HomeHeader name={data.name} src={data.avatar}/>
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
       <View className=" bg-[#0B646B] rounded-xl py-10 px-3 w-full h-auto items-center">
         <View className="items-center shadow-xl ">

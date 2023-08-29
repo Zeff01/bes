@@ -52,6 +52,7 @@ const Login = () => {
         const data = response.data;
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("Home");
+        console.log(data.success.token)
       } catch (error) {
         console.error("Error:z", error);
       }
