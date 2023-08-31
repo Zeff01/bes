@@ -12,6 +12,7 @@ const Login = () => {
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
   const navigation = useNavigation();
 
   const handleEmailChange = (text) => {
@@ -52,7 +53,7 @@ const Login = () => {
         const data = response.data;
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("Home");
-        console.log(data.success.token)
+        console.log(data.success.token);
       } catch (error) {
         console.error("Error:z", error);
       }
@@ -133,13 +134,6 @@ const Login = () => {
             </Text>
           </TouchableOpacity>
         </View>
-
-        {/* <TouchableOpacity
-          className="mt-4 bg-primary p-2 rounded-lg shadow-xl"
-          onPress={handleLogin}
-        >
-          <Text className="text-center text-lg text-white">Login</Text>
-        </TouchableOpacity> */}
         <Button
           title="Login"
           onPress={handleLogin}
