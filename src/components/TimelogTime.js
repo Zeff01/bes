@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { api_get_user } from "../api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
