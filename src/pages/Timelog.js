@@ -9,6 +9,7 @@ import TimelogItem from "../components/TimelogItem";
 
 const Timelog = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const baseURL = "http://bes.outposter.com.au/api/timelogs";
@@ -27,7 +28,6 @@ const Timelog = () => {
         console.error("Error fetching timelogs:", error);
       }
     };
-
     fetchData();
   }, []);
 
