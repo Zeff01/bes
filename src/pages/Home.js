@@ -7,9 +7,6 @@ import HomeDate from "../components/HomeDate";
 import axios from "axios";
 import TaskCard from "../components/TaskCard";
 import { ScrollView } from "react-native";
-import * as Notifications from "expo-notifications";
-import getPermission from "../utils/getPermission";
-import { subMinutes, parse, format } from "date-fns";
 
 const useNowTimer = () => {
   useEffect(() => {
@@ -47,14 +44,6 @@ const ClockInProvider = ({ children }) => {
   );
 };
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
 const Home = () => {
   const baseURL = "http://bes.outposter.com.au/api/auth/user";
   const [data, setData] = useState({});
@@ -70,7 +59,6 @@ const Home = () => {
   const baseURL = "http://bes.outposter.com.au/api/auth/user";
   const [data, setData] = useState([]);
   const { second, minute, hour } = useNowTimer();
-  const [timeIn, setTimeIn] = useState(false);
 
   const key = `${hour}:${minute}:${second}`;
 
@@ -108,33 +96,6 @@ const Home = () => {
       console.error(e);
     }
   };
-
-  const time_in = data.time_in === undefined ? "12:00:00" : data.time_in;
-  // const time_in = "17:55:00";
-  const timeInDate = parse(time_in, "HH:mm:ss", new Date());
-  const triggerTime = subMinutes(timeInDate, 15);
-  const now = new Date();
-  const currentTime = format(now, "hh:mm a");
-  const timeInSchedule = format(triggerTime, "hh:mm a");
-  console.log(timeInSchedule);
-
-  useEffect(() => {
-    const scheduleNotification = async () => {
-      if (currentTime === timeInSchedule) {
-        setTimeIn(true);
-        console.log("true", timeIn);
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            title: "Upcoming Work",
-            body: "Your work is upcoming in 15 minutes.",
-          },
-          trigger: { seconds: 2, repeats: false },
-        });
-      }
-    };
-
-    scheduleNotification();
-  }, [setTimeIn, timeIn, currentTime]);
 
   useEffect(() => {
     const checkToken = async () => {
