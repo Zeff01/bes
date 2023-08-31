@@ -31,7 +31,7 @@ const TimelogItem = ({
   }, []);
 
   return (
-    <View className="flex px-2 mx-4 border-2 mb-2 rounded-md border-[#0B646B] py-2">
+    <View className="flex px-3 mx-4 border-2 mb-2 rounded-md border-[#0B646B] py-2">
       <View className=" justify-between my-2">
         <View className="flex-row gap-5 items-center ">
           <TouchableOpacity>
