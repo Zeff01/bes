@@ -58,6 +58,17 @@ Notifications.setNotificationHandler({
 const Home = () => {
   const baseURL = "http://bes.outposter.com.au/api/auth/user";
   const [data, setData] = useState({});
+
+const renderNoteCard = (title) => (
+  <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
+    <NoteHeader headerTitle="Notes" />
+    <NoteCard title={title} />
+  </View>
+);
+
+const Home = () => {
+  const baseURL = "http://bes.outposter.com.au/api/auth/user";
+  const [data, setData] = useState([]);
   const { second, minute, hour } = useNowTimer();
   const [timeIn, setTimeIn] = useState(false);
 
