@@ -1,44 +1,15 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// import AnalogClockCard from "../components/AnalogClockCard";
 import AnalogClock from "react-native-clock-analog";
-import NoteCard from "../components/NoteCard";
-import NoteHeader from "../components/NoteHeader";
 import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
 import axios from "axios";
 import TaskCard from "../components/TaskCard";
 import { ScrollView } from "react-native";
-
-const data = [
-  {
-    title: "Note 1",
-  },
-  {
-    title: "Note 2",
-  },
-  {
-    title: "Note 3",
-  },
-  {
-    title: "Note 4",
-  },
-  {
-    title: "Note 5",
-  },
-  {
-    title: "Note 6",
-  },
-];
-
-const nowDate = () => {
-  const d = new Date();
-  let second = d.getSeconds();
-  let minute = d.getMinutes();
-  let hour = d.getHours();
-  return { second, minute, hour };
-};
+import * as Notifications from "expo-notifications";
+import getPermission from "../utils/getPermission";
+import { subMinutes, parse, format } from "date-fns";
 
 const useNowTimer = () => {
   useEffect(() => {
@@ -76,23 +47,17 @@ const ClockInProvider = ({ children }) => {
   );
 };
 
-// const renderClockCard = (
-//   key,
-//   hour,
-//   minute,
-//   second,
-//   handleClockInOut,
-//   isClockIn
-// ) => (
-//   <AnalogClockCard
-//     key={key}
-//     hour={hour}
-//     minute={minute}
-//     second={second}
-//     handleClockInOut={handleClockInOut}
-//     isClockIn={isClockIn}
-//   />
-// );
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+const Home = () => {
+  const baseURL = "http://bes.outposter.com.au/api/auth/user";
+  const [data, setData] = useState({});
 
 const renderNoteCard = (title) => (
   <View className=" bg-[#F7E594] mt-3 rounded-xl py-5 px-3 flex-1">
@@ -105,6 +70,8 @@ const Home = () => {
   const baseURL = "http://bes.outposter.com.au/api/auth/user";
   const [data, setData] = useState([]);
   const { second, minute, hour } = useNowTimer();
+  const [timeIn, setTimeIn] = useState(false);
+
   const key = `${hour}:${minute}:${second}`;
 
   function formatTime(hour, minute) {
@@ -134,7 +101,7 @@ const Home = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      console.log(token)
+      console.log(token);
       const data = await response.json();
       console.log(data);
     } catch (e) {
@@ -142,13 +109,39 @@ const Home = () => {
     }
   };
 
+  const time_in = data.time_in === undefined ? "12:00:00" : data.time_in;
+  // const time_in = "17:55:00";
+  const timeInDate = parse(time_in, "HH:mm:ss", new Date());
+  const triggerTime = subMinutes(timeInDate, 15);
+  const now = new Date();
+  const currentTime = format(now, "hh:mm a");
+  const timeInSchedule = format(triggerTime, "hh:mm a");
+  console.log(timeInSchedule);
+
+  useEffect(() => {
+    const scheduleNotification = async () => {
+      if (currentTime === timeInSchedule) {
+        setTimeIn(true);
+        console.log("true", timeIn);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Upcoming Work",
+            body: "Your work is upcoming in 15 minutes.",
+          },
+          trigger: { seconds: 2, repeats: false },
+        });
+      }
+    };
+
+    scheduleNotification();
+  }, [setTimeIn, timeIn, currentTime]);
+
   useEffect(() => {
     const checkToken = async () => {
       try {
         const token = await AsyncStorage.getItem("@auth_token");
         if (token) {
-          // console.log("Token already exists in AsyncStorage", token);
-          console.log(token);
+          getPermission();
         }
       } catch (e) {
         console.error(e);
@@ -189,27 +182,9 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // <FlatList
-  //       contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
-  //       data={[{ type: "clock" }, ...data]}
-  //       keyExtractor={(item, index) => index.toString()}
-  //       renderItem={({ item }) =>
-  //         item.type === "clock"
-  //           ? renderClockCard(
-  //               key,
-  //               hour,
-  //               minute,
-  //               second,
-  //               handleClockInOut,
-  //               isClockIn
-  //             )
-  //           : renderNoteCard(item.title)
-  //       }
-  //     />
-
   return (
     <ScrollView className="flex-1   bg-white px-3">
-      <HomeHeader name={data.name} src={data.avatar}/>
+      <HomeHeader name={data.name} src={data.avatar} />
       <HomeDate dayName={dayName} formattedDate={formattedDate} />
       <View className=" bg-[#0B646B] rounded-xl py-10 px-3 w-full h-auto items-center">
         <View className="items-center shadow-xl ">
@@ -241,7 +216,7 @@ const Home = () => {
               {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
             </Text>
           </TouchableOpacity>
-          <Text className="my-5 text-3xl font-bold text-gray-300 ">MNL</Text>
+          <Text className="my-5 text-3xl font-bold text-gray-300 "></Text>
           <Text className="text-gray-300  font-semibold text-6xl">
             {formattedTime}
           </Text>
