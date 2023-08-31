@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  Image,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-} from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TimelogHeader from "../components/TimelogHeader";
 import TimelogInfoBox from "../components/TimelogInfoBox";
 import TimelogTime from "../components/TimelogTime";
-import TimelogItemDetails from "../components/TimelogItemDetails";
-import { Avatar } from "@react-native-material/core";
 import TimelogItem from "../components/TimelogItem";
 
 const Timelog = () => {
@@ -44,17 +33,8 @@ const Timelog = () => {
 
   const flatData = data.data ? data.data.flat() : [];
 
-  // <FlatList
-  //       className="px-3"
-  //       data={flatData}
-  //       renderItem={({ item }) => <TimelogItem item={item} />}
-  //       keyExtractor={(item) => item.id}
-  //       ListHeaderComponent={renderHeader}
-  //       onEndReachedThreshold={0.5}
-  //     />
-
   return (
-    <ScrollView className="flex-1 bg-white ">
+    <ScrollView className=" bg-white ">
       <View className="px-4">
         <TimelogHeader />
         <TimelogInfoBox />
@@ -68,21 +48,29 @@ const Timelog = () => {
         </Text>
       </View>
 
-      {flatData.map((item, ind) => {
-        console.log(item.started_at);
-        return (
-          <View key={ind}>
-            <TimelogItem
-              id={item.id}
-              note={item.note}
-              user_id={item.user_id}
-              created_at={item.created_at}
-              stopped_at={item.stopped_at}
-              started_at={item.started_at}
-            />
-          </View>
-        );
-      })}
+      <View className="mb-5">
+        {flatData
+          .slice()
+          .sort((itemA, itemB) => {
+            const timeA = new Date(itemA.started_at).getTime();
+            const timeB = new Date(itemB.started_at).getTime();
+            return timeB - timeA;
+          })
+          .map((item, index) => {
+            return (
+              <View key={index}>
+                <TimelogItem
+                  id={item.id}
+                  note={item.note}
+                  user_id={item.user_id}
+                  created_at={item.created_at}
+                  stopped_at={item.stopped_at}
+                  started_at={item.started_at}
+                />
+              </View>
+            );
+          })}
+      </View>
     </ScrollView>
   );
 };

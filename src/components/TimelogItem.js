@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity } from "react-native";
 import TimelogItemDetails from "./TimelogItemDetails";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { format } from "date-fns";
 
 const TimelogItem = ({
   id,
@@ -30,6 +31,10 @@ const TimelogItem = ({
     fetchData();
   }, []);
 
+  const formattedDate = format(new Date(created_at), "MMMM d, yyyy");
+  const startedAt = format(new Date(started_at), "h:mm a");
+  const stoppedAt = format(new Date(stopped_at), "h:mm a");
+
   return (
     <View className="flex px-3 mx-4 border-2 mb-2 rounded-md border-[#0B646B] py-2">
       <View className=" justify-between my-2">
@@ -42,18 +47,9 @@ const TimelogItem = ({
           <TimelogItemDetails label="Item ID:" value={id} />
           <TimelogItemDetails label="Note:" value={note} />
           <TimelogItemDetails label="User ID:" value={user_id} />
-          <TimelogItemDetails
-            label="Date:"
-            value={new Date(created_at).toLocaleDateString()}
-          />
-          <TimelogItemDetails
-            label="Clockin:"
-            value={new Date(started_at).toLocaleTimeString()}
-          />
-          <TimelogItemDetails
-            label="Clockout:"
-            value={new Date(stopped_at).toLocaleTimeString()}
-          />
+          <TimelogItemDetails label="Date:" value={formattedDate} />
+          <TimelogItemDetails label="Clockin:" value={startedAt} />
+          <TimelogItemDetails label="Clockout:" value={stoppedAt} />
         </View>
       </View>
     </View>

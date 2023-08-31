@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import AnalogClock from "react-native-clock-analog";
 import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
+import getPermission from "../utils/getPermission";
 import axios from "axios";
 import TaskCard from "../components/TaskCard";
 import { ScrollView } from "react-native";
@@ -140,9 +141,9 @@ const Home = () => {
         <View className="items-center shadow-xl ">
           <AnalogClock
             size={200}
-            key={key}
+            key={1}
             colorClock="#fff"
-            colorNumber="#000000 "
+            colorNumber="#000000"
             colorCenter="#000000"
             colorSeconds="#000000"
             colorHour="#000000"
