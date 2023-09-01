@@ -51,7 +51,11 @@ const TimelogInfoBox = () => {
           </View>
           <View>
             <Text className="text-white text-lg bg-[#137c84] font-bold px-2 py-1 rounded-full">
-              {data.role}
+              {data &&
+                data?.role
+                  ?.split("_")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ")}
             </Text>
           </View>
         </View>
