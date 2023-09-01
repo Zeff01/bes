@@ -27,7 +27,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   return (
     <View className="gap-2 w-full my-2 flex">
       <View className="flex-row space-x-3 mb-1 items-center justify-center w-full mx-3">
-        <View className="p-8 border-[#0B646B] border-2 rounded-lg  w-[48%] ">
+        <View className=" border-[#0B646B] border-2 rounded-lg  w-[48%] h-[150px] justify-center items-center">
           <Icon
             name="timer-outline"
             size={30}
@@ -40,7 +40,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             {total_late_hrs === 1 ? "Hour" : "Hours"}
           </Text>
         </View>
-        <View className="p-8 border-[#0B646B] border-2 rounded-lg text-center w-[48%]">
+        <View className="justify-center items-center border-[#0B646B] border-2 rounded-lg text-center w-[48%] h-[150px]">
           <Icon
             name="alarm-outline"
             size={30}
@@ -54,7 +54,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
         </View>
       </View>
       <View className="flex-row space-x-3   justify-center w-full mx-3">
-        <View className="py-8 border-[#0B646B] border-2 rounded-lg text-center w-[48%]">
+        <View className="justify-center items-center border-[#0B646B] border-2 rounded-lg text-center h-[150px] w-[48%]">
           <Icon
             name="star-outline"
             size={30}
@@ -69,7 +69,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
           </Text>
         </View>
 
-        <View className=" py-8 border-[#0B646B] border-2 rounded-lg text-center w-[48%]">
+        <View className=" justify-center items-center border-[#0B646B] border-2 rounded-lg text-center w-[48%] h-[150px]">
           <Icon
             name="time-outline"
             size={30}

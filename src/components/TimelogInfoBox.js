@@ -29,18 +29,14 @@ const TimelogInfoBox = () => {
     return date.toLocaleDateString("en-US", options);
   }
 
-  const birthDate = data?.birth_date;
-  const registerDate = data?.email_verified_at;
-  const latestAct = data?.updated_at;
-
-  const formattedBirthDate = formatDate(birthDate);
-  const formattedRegistrationDate = formatDate(registerDate);
-  const formattedLatestAct = formatDate(latestAct);
+  const formattedBirthDate = formatDate(data?.birth_date);
+  const formattedRegistrationDate = formatDate(data?.created_at);
+  const formattedLatestAct = formatDate(data.updated_at);
 
   return (
     <View className="w-full  rounded-lg  py-3 bg-[#0B646B] shadow">
       <View className="px-4 flex space-y-1 ">
-        <View className="flex-row justify-between items-center">
+        <View className="">
           <View>
             <Text className="text-2xl mb-2 font-bold  pt-2 text-white">
               {data.name}
@@ -49,22 +45,16 @@ const TimelogInfoBox = () => {
               {data.position} - {data.job_type}
             </Text>
           </View>
-          <View>
-            <Text className="text-white text-lg bg-[#137c84] font-bold px-2 py-1 rounded-full">
-              {data &&
-                data?.role
-                  ?.split("_")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
+          <View className="">
+            <Text className="text-white text-lg font-bold py-1 rounded-full">
+              {data.role}
             </Text>
           </View>
         </View>
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Birthdate:</Text>
           <Text className="text-white text-[15px]">
-            {formattedBirthDate === undefined || "Invalid Date"
-              ? formattedBirthDate
-              : "asd"}
+            {formattedBirthDate === undefined || "" ? "" : formattedBirthDate}
           </Text>
         </View>
         <View className="flex-row items-center gap-2">
@@ -79,9 +69,9 @@ const TimelogInfoBox = () => {
         <View className="flex-row items-center gap-2">
           <Text className="font-semibold text-xl text-white">Registered:</Text>
           <Text className="text-white text-[15px]">
-            {formattedBirthDate === undefined || "Invalid Date"
-              ? formattedRegistrationDate
-              : ""}{" "}
+            {formattedRegistrationDate === undefined || ""
+              ? ""
+              : formattedRegistrationDate}
           </Text>
         </View>
         <View className="flex-row items-center gap-2">
@@ -89,9 +79,7 @@ const TimelogInfoBox = () => {
             Latest Activity:
           </Text>
           <Text className="text-white text-[15px]">
-            {formattedBirthDate === undefined || "Invalid Date"
-              ? formattedLatestAct
-              : ""}
+            {formattedLatestAct === undefined || "" ? "" : formattedLatestAct}
           </Text>
         </View>
         <View className="flex-row items-center gap-2">
