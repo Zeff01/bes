@@ -7,8 +7,8 @@ import { Switch } from "react-native";
 import axios from "axios";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("jeronealimpia@gmail.com");
+  const [password, setPassword] = useState("admin1234");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -82,7 +82,6 @@ const Login = () => {
         </TouchableOpacity>
 
         <View className="border-t border-gray-300 my-2"></View>
-
         <View className=" mb-2">
           <TextInput
             color="#0B646B"
