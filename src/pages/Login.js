@@ -5,15 +5,43 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Switch } from "react-native";
 import axios from "axios";
+import * as Notifications from "expo-notifications";
 
 const Login = () => {
-  const [email, setEmail] = useState("jeronealimpia@gmail.com");
-  const [password, setPassword] = useState("admin1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    const registerForPushNotificationsAsync = async () => {
+      let token;
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+    };
+
+    registerForPushNotificationsAsync();
+
+    if (!keepLoggedIn) {
+      AsyncStorage.removeItem("@auth_token");
+    }
+  }, [keepLoggedIn]);
 
   const handleEmailChange = (text) => {
     setEmail(text);

@@ -10,8 +10,9 @@ import TaskCard from "../components/TaskCard";
 import { ScrollView } from "react-native";
 import { formatTime } from "../utils/formatTime";
 import { Permissions } from "expo";
-import { subMinutes, parse, format, set } from "date-fns";
+import { subMinutes, parse, addMinutes } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
+import * as Notifications from "expo-notifications";
 
 const useNowTimer = () => {
   const nowDate = () => {
@@ -57,46 +58,41 @@ const requestNotificationPermission = async () => {
 };
 
 const scheduleNotification = async (timeIn, timeOut) => {
-  if (typeof timeIn === null && typeof timeOut === null) {
+  if (!timeIn || !timeOut) {
     return;
   }
-  const time_in = timeIn;
-  const timeInDate = parse(time_in, "HH:mm:ss", new Date());
+
+  const timeInDate = parse(timeIn, "HH:mm:ss", new Date());
+  const timeOutDate = parse(timeOut, "HH:mm:ss", new Date());
+
   const triggerTimeIn = subMinutes(timeInDate, 15);
-  const timeInSchedule = format(triggerTimeIn, "hh:mm a");
+  const triggerTimeOut = addMinutes(timeOutDate, 15); // Adding 15 minutes to time_out
 
-  const time_out = timeOut;
-  const timeOutDate = parse(time_out, "HH:mm:ss", new Date());
-  const triggerTimeOut = subMinutes(timeOutDate, 15);
-  const timeOutSchedule = format(triggerTimeOut, "hh:mm a");
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Time to Clock In",
+      body: "You have to clock in in 15 minutes.",
+    },
+    trigger: {
+      hour: triggerTimeIn.getHours(),
+      minute: triggerTimeIn.getMinutes(),
+      second: 0,
+      repeats: true,
+    },
+  });
 
-  const now = new Date();
-  const currentTime = format(now, "hh:mm a");
-
-  if (currentTime === timeInSchedule) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Upcoming Work",
-        body: "Your work is upcoming in 15 minutes.",
-      },
-      trigger: {
-        seconds: timeDifference / 1000,
-        repeats: false,
-      },
-    });
-  }
-  if (currentTime === timeOutSchedule) {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        title: "Work Completed",
-        body: "Your work was completed 15 minutes ago.",
-      },
-      trigger: {
-        seconds: timeDifferenceWorkDone / 1000,
-        repeats: false,
-      },
-    });
-  }
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Time to Clock Out",
+      body: "You could have clocked out 15 minutes ago.",
+    },
+    trigger: {
+      hour: triggerTimeOut.getHours(),
+      minute: triggerTimeOut.getMinutes(),
+      second: 0,
+      repeats: true,
+    },
+  });
 };
 
 const Home = () => {
@@ -117,7 +113,12 @@ const Home = () => {
   const { isClockIn, setIsClockIn } = useContext(ClockInContext);
 
   const handleClockInOut = async () => {
-    setIsClockIn(!isClockIn);
+    setIsClockIn((prevIsClockIn) => {
+      const newIsClockIn = !prevIsClockIn;
+      AsyncStorage.setItem("@clock_in_status", JSON.stringify(newIsClockIn));
+      return newIsClockIn;
+    });
+
     try {
       const token = await AsyncStorage.getItem("@auth_token");
 
@@ -133,7 +134,6 @@ const Home = () => {
         throw new Error("Network response was not ok");
       }
       const data = await response.json();
-      console.log(data);
     } catch (e) {
       console.error(e);
     }
@@ -142,6 +142,7 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = await AsyncStorage.getItem("@auth_token");
+
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -182,6 +183,21 @@ const Home = () => {
       }
     };
     checkToken();
+  }, []);
+
+  useEffect(() => {
+    const fetchClockInStatus = async () => {
+      try {
+        const savedStatus = await AsyncStorage.getItem("@clock_in_status");
+        if (savedStatus !== null) {
+          setIsClockIn(JSON.parse(savedStatus));
+        }
+      } catch (e) {
+        console.error("Failed to fetch clock in status", e);
+      }
+    };
+
+    fetchClockInStatus();
   }, []);
 
   const dayName = [
