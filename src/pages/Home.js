@@ -64,9 +64,8 @@ const scheduleNotification = async (timeIn, timeOut) => {
 
   const timeInDate = parse(timeIn, "HH:mm:ss", new Date());
   const timeOutDate = parse(timeOut, "HH:mm:ss", new Date());
-
   const triggerTimeIn = subMinutes(timeInDate, 15);
-  const triggerTimeOut = addMinutes(timeOutDate, 15); // Adding 15 minutes to time_out
+  const triggerTimeOut = addMinutes(timeOutDate, 15); 
 
   await Notifications.scheduleNotificationAsync({
     content: {
