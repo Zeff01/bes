@@ -1,48 +1,45 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Timelog from "../pages/Timelog";
-import CustomDrawer from "./CustomDrawer";
 import IonIcons from "react-native-vector-icons/Ionicons";
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
-function HomeDrawer() {
+const Tab = createBottomTabNavigator();
+
+function HomeTabs() {
   return (
-    <Drawer.Navigator
-      drawerContent={(props) => <CustomDrawer {...props} />}
+    <Tab.Navigator
       initialRouteName="HomeScreen"
-      screenOptions={{
-        headerShown: true,
-        drawerLabelStyle: {
-          marginLeft: -15,
-          fontSize: 15,
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ color }) => {
+          let iconName;
+
+          if (route.name === "HomeScreen") {
+            iconName = "home-outline";
+          } else if (route.name === "Timelog") {
+            iconName = "time-outline";
+          }
+
+          return <IonIcons name={iconName} size={22} color={color} />;
         },
-      }}
+      })}
     >
-      <Drawer.Screen
+      <Tab.Screen
         name="HomeScreen"
         component={Home}
-        options={{
-          drawerIcon: ({ color }) => (
-            <IonIcons name="home-outline" size={22} color={color} />
-          ),
-        }}
+        options={{ title: "Home" }}
       />
-      <Drawer.Screen
+      <Tab.Screen
         name="Timelog"
         component={Timelog}
-        options={{
-          drawerIcon: ({ color }) => (
-            <IonIcons name="time-outline" size={22} color={color} />
-          ),
-        }}
+        options={{ title: "Timelog" }}
       />
-    </Drawer.Navigator>
+    </Tab.Navigator>
   );
 }
 
@@ -52,7 +49,7 @@ function Navigation() {
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Home"
-          component={HomeDrawer}
+          component={HomeTabs}
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Login" component={Login} />
