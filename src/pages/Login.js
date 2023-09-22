@@ -1,41 +1,41 @@
 import React, { useEffect, useState } from "react";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, Switch } from "react-native";
 import { TextInput, Button } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Switch } from "react-native";
+
 import axios from "axios";
 import * as Notifications from "expo-notifications";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("jeronealimpia@gmail.com");
+  const [password, setPassword] = useState("admin1234");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const navigation = useNavigation();
 
+  const registerForPushNotificationsAsync = async () => {
+    let token;
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+  };
+
   useEffect(() => {
-    const registerForPushNotificationsAsync = async () => {
-      let token;
-      const { status: existingStatus } =
-        await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-
-      if (existingStatus !== "granted") {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-
-      if (finalStatus !== "granted") {
-        alert("Failed to get push token for push notification!");
-        return;
-      }
-
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    };
-
     registerForPushNotificationsAsync();
 
     if (!keepLoggedIn) {
@@ -52,12 +52,6 @@ const Login = () => {
     setPassword(text);
     setPasswordError("");
   };
-
-  useEffect(() => {
-    if (!keepLoggedIn) {
-      AsyncStorage.removeItem("@auth_token");
-    }
-  }, [keepLoggedIn]);
 
   const handleLogin = async () => {
     if (!email) {
@@ -80,13 +74,14 @@ const Login = () => {
 
         const data = response.data;
         await AsyncStorage.setItem("@auth_token", data.success.token);
-        navigation.navigate("Home");
+        navigation.navigate("BottomTabs");
         console.log(data.success.token);
       } catch (error) {
         console.error("Error:z", error);
       }
     }
   };
+
   return (
     <View className="flex-1 items-center justify-center ">
       <View className=" w-full  items-center justify-center ">

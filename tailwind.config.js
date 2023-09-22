@@ -14,6 +14,7 @@ module.exports = {
         quaternary: "#5d97af",
         quinary: "#fffcca",
         senary: "#efcc7f",
+        septenary: "#0B646B",
       },
       fontFamily: {
         titles: ["Kanit", "sans-serif"],
