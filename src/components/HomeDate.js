@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
+import HomeHeader from "../components/HomeHeader";
 
-export default function HomeDate({ dayName, formattedDate }) {
+export default function HomeDate({ dayName, formattedDate, name, src }) {
   return (
-    <View className="bg-[#0B646B] w-full py-5 px-4  rounded-xl mb-3">
-      <Text className="text-4xl  font-black text-white">{dayName}</Text>
-      <Text className="text-lg font-bold text-white">{formattedDate}</Text>
+    <View className="bg-white w-full py-5 px-4  rounded-xl mb-3">
+      <HomeHeader name={name} src={src} dayName={dayName} formattedDate={formattedDate}/>
     </View>
   );
 }
