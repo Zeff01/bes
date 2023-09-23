@@ -2,7 +2,6 @@ import React, { useState, useEffect, createContext, useContext } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AnalogClock from "react-native-clock-analog";
-import HomeHeader from "../components/HomeHeader";
 import HomeDate from "../components/HomeDate";
 import getPermission from "../utils/getPermission";
 import axios from "axios";
@@ -216,12 +215,12 @@ const Home = () => {
   });
 
   return (
-    <ScrollView className="flex-1   bg-white px-3">
-      <HomeHeader name={data.name} src={data.avatar} />
-      <HomeDate dayName={dayName} formattedDate={formattedDate} />
+    <ScrollView className="flex-1 bg-white px-3">
+      
+      <HomeDate dayName={dayName} formattedDate={formattedDate} name={data.name} src={data.avatar} />
       {error && <Text>{error}</Text>}
-      <View className=" bg-[#0B646B] rounded-xl py-10 px-3 w-full h-auto items-center">
-        <View className="items-center shadow-xl ">
+      <View className=" bg-quinary rounded-xl py-10 px-3 w-full h-auto items-center">
+        <View className="items-center">
           <AnalogClock
             size={200}
             key={key}
@@ -237,23 +236,23 @@ const Home = () => {
             minutes={minute}
             seconds={second}
           />
-          <Text className="text-gray-400 mt-5 font-semibold text-xl">
+          <Text className="text-gray-400 mt-5 font-normals text-l">
             Schedule: {data.time_in} - {data.time_out}
+          </Text>
+          <Text className="text-gray-300 font-semibold text-6xl mt-4">
+            {formattedTime}
           </Text>
           <TouchableOpacity
             className={`mt-6 px-[50px] py-4  ${
-              isClockIn ? "bg-red-500" : "bg-white "
-            } rounded-sm`}
+              isClockIn ? "bg-red-500" : "bg-primary "
+            } rounded-full`}
             onPress={handleClockInOut}
           >
-            <Text className="text-black font-bold">
+            <Text className="text-white font-bold">
               {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
             </Text>
           </TouchableOpacity>
-          <Text className="my-5 text-3xl font-bold text-gray-300 "></Text>
-          <Text className="text-gray-300  font-semibold text-6xl">
-            {formattedTime}
-          </Text>
+          
         </View>
       </View>
       <View className="mt-5">

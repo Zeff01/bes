@@ -12,6 +12,7 @@ export default function BottomTabs() {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={({ route }) => ({
+        headerShown: false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -31,12 +32,12 @@ export default function BottomTabs() {
           height: 50,
           paddingBottom: 5,
           paddingTop: 5,
-        },
+        }
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Timelog" component={Timelog} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen name="Home" component={Home}/>
+      <Tab.Screen name="Timelog" component={Timelog}/>
+      <Tab.Screen name="Profile" component={Profile}/>
     </Tab.Navigator>
   );
 }
