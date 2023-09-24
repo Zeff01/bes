@@ -8,12 +8,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#2B6673",
-        secondary: "#87BOB6",
-        tertiary: "#EOF5FA",
-        quaternary: "#AAEDFC",
-        quinary: "#EFF1F2",
-        senary: "#DBE1FC",
+        primaryColor: "#2B6673",
+        secondaryColor: "#87B0B6",
+        tertiaryColor: "#E0F5F4",
+        quarternaryColor: "#AAEDFC",
+        quinaryColor: "#EFF1F2",
+        senaryColor: "#DBE1FC",
       },
       fontFamily: {
         titles: ["Kanit", "sans-serif"],
@@ -29,9 +29,6 @@ module.exports = {
         demi: "600",
         medium: "500",
       },
-      // boxShadow: {
-      //   'shadow': 'rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px',
-      // },
     },
   },
   plugins: [],

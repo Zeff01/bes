@@ -9,15 +9,15 @@ export default function HomeHeader({ name, src, dayName, formattedDate }) {
             source={require("../../assets/outposter_logo.png")}
             className="w-[250px] h-[50px] justify-end"
           /> */}
-          <Text className="text-md font-bold">Good PM, {name}</Text>
-          <Text className="text-4xl font-black text-primary">{dayName}</Text>
-          <Text className="text-lg font-bold text-black">{formattedDate}</Text>
+          <Text className="text-md font-light">Good morning, {name}</Text>
+          <Text className="text-4xl font-black text-primaryColor uppercase">{dayName}</Text>
+          <Text className="text-md font-light">{formattedDate}</Text>
         </View>
 
         <View>
           <Image
             src={`https://bes.outposter.com.au/images/avatars/${src}`}
-            className="w-[100px] h-[100px] rounded-full"
+            className={"w-[100px] h-[100px] rounded-full"}
           />
         </View>
 
