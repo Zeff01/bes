@@ -25,9 +25,19 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   }, []);
 
   return (
-    <View className="gap-2 w-full my-2 flex">
+    <View className="flex gap-2 w-full mt-5 mb-3">
+      <Text className="font-black text-xl tracking-widest text-[#0B646B]">Summary</Text>
       <View className="flex-row space-x-3 mb-1 items-center justify-center w-full mx-3">
-        <View className=" border-[#0B646B] border-2 rounded-lg  w-[48%] h-[150px] justify-center items-center">
+        <View className="bg-white rounded-lg  w-[48%] h-[150px] justify-center items-center" style={{
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    }}>
           <Icon
             name="timer-outline"
             size={30}
@@ -40,7 +50,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             {total_late_hrs === 1 ? "Hour" : "Hours"}
           </Text>
         </View>
-        <View className="justify-center items-center border-[#0B646B] border-2 rounded-lg text-center w-[48%] h-[150px]">
+        <View className="bg-tertiaryColor justify-center items-center rounded-lg text-center w-[48%] h-[150px]">
           <Icon
             name="alarm-outline"
             size={30}
@@ -53,8 +63,8 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
           </Text>
         </View>
       </View>
-      <View className="flex-row space-x-3   justify-center w-full mx-3">
-        <View className="justify-center items-center border-[#0B646B] border-2 rounded-lg text-center h-[150px] w-[48%]">
+      <View className="flex-row space-x-3 justify-center w-full mx-3">
+        <View className="bg-tertiaryColor justify-center items-center rounded-lg text-center h-[150px] w-[48%]">
           <Icon
             name="star-outline"
             size={30}
@@ -69,7 +79,16 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
           </Text>
         </View>
 
-        <View className=" justify-center items-center border-[#0B646B] border-2 rounded-lg text-center w-[48%] h-[150px]">
+        <View className="bg-white justify-center items-center rounded-lg text-center w-[48%] h-[150px]" style={{
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    }}>
           <Icon
             name="time-outline"
             size={30}
