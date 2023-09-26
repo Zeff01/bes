@@ -215,16 +215,16 @@ const Home = () => {
   });
 
   return (
-    <ScrollView className="flex-1 bg-white">
+    <ScrollView className="flex-1 bg-white px-3">
       <HomeDate
         dayName={dayName}
         formattedDate={formattedDate}
         name={data.name}
-        src={data.avatar} />
+        src={data.avatar}
+      />
       {error && <Text>{error}</Text>}
 
-      <View className="rounded-t-xl px-3 w-full h-auto items-center"
-      >
+      <View className="rounded-t-xl px-3 w-full h-auto items-center">
         <View className="items-center">
           <CustomAnalogClock />
 
@@ -235,7 +235,9 @@ const Home = () => {
             {formattedTime}
           </Text>
           <TouchableOpacity
-            className={`mt-6 w-[180px] py-4  ${isClockIn ? "bg-red-500" : "bg-primaryColor"} rounded-full`}
+            className={`mt-6 w-[180px] py-4  ${
+              isClockIn ? "bg-red-500" : "bg-primaryColor"
+            } rounded-full`}
             onPress={handleClockInOut}
             style={{
               shadowColor: "#000",

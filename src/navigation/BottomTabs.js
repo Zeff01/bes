@@ -24,20 +24,21 @@ export default function BottomTabs() {
             iconName = focused ? "ios-person" : "ios-person-outline";
           }
 
-          return <Ionicons name={iconName} size={size} color={"#0B646B"} />;
+          return <Ionicons name={iconName} size={35} color={"#0B646B"} />;
         },
         tabBarActiveTintColor: "#0B646B",
         tabBarInactiveTintColor: "#0B646B",
         tabBarStyle: {
-          height: 50,
-          paddingBottom: 5,
+          height: 70,
+          paddingBottom: 15,
           paddingTop: 5,
-        }
+        },
+        tabBarLabel: "",
       })}
     >
-      <Tab.Screen name="Home" component={Home}/>
-      <Tab.Screen name="Timelog" component={Timelog}/>
-      <Tab.Screen name="Profile" component={Profile}/>
+      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Timelog" component={Timelog} />
+      <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );
 }
