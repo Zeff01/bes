@@ -105,7 +105,7 @@ const Login = () => {
         const data = response.data;
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("BottomTabs");
-        console.log(data.success.token);
+        // console.log(data.success.token);
       } catch (error) {
         console.error("Error:z", error);
       }
@@ -114,7 +114,7 @@ const Login = () => {
 
   return (
     <View className="flex-1 bg-primaryColor justify-start">
-      <View className="pt-[70] w-full h-[85%] items-center justify-end bg-senaryColor rounded-b-[70]">
+      <View className="pt-[70] w-full h-[85%] items-center justify-end bg-tertiaryColor rounded-b-[70]">
         <View className={isKeyboardOn ? "" : "my-auto"}>
           <View className="justify-center items-center">
             <Image
@@ -189,7 +189,7 @@ const Login = () => {
                 </Text>
               </View>
               <TouchableOpacity>
-                <Text className="text-right text-primaryColor text-sm text-secondary">
+                <Text className="text-right text-primaryColor text-sm text-secondaryColor">
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
@@ -217,9 +217,9 @@ const Login = () => {
         >
           <TouchableOpacity
             onPress={handleLogin}
-            className="rounded-full w-[140] h-[50] bg-0 justify-center border-4 border-secondary"
+            className="rounded-full w-[140] h-[50] bg-0 justify-center border-4 border-[#87b0b6]"
           >
-            <Text className="text-center text-xl text-primaryColor">
+            <Text className="text-white text-center text-xl text-primaryColor">
               LOGIN
             </Text>
           </TouchableOpacity>
@@ -227,7 +227,7 @@ const Login = () => {
       </View>
 
       <View className="mx-4 my-auto">
-        <Text className="text-white text-center text-sm ">
+        <Text className="text-tertiaryColor text-center text-sm ">
           Don't have an account? Contact your System Administrator.
         </Text>
       </View>

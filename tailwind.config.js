@@ -10,10 +10,12 @@ module.exports = {
       colors: {
         primaryColor: "#2B6673",
         secondaryColor: "#87B0B6",
-        tertiaryColor: "#E0F5F4",
+        tertiaryColor: "#E0F5FA",
         quarternaryColor: "#AAEDFC",
         quinaryColor: "#EFF1F2",
         senaryColor: "#DBE1FC",
+        whiteColor: "#F5F5FA",
+        blackColor: "#13131A",
       },
       fontFamily: {
         titles: ["Kanit", "sans-serif"],
