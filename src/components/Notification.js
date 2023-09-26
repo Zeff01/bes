@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Platform, Vibration } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -108,7 +108,7 @@ const schedulePushNotification = async (
 
 // Notification Comp
 export const Notification = () => {
-  const [expoPushToken, setExpoPushToken] = useState("");
+  // const [expoPushToken, setExpoPushToken] = useState("");
   const notificationListener = useRef();
 
   // import logo icon(for banner notif)
@@ -146,7 +146,7 @@ export const Notification = () => {
         }
 
         console.log("token: ", token);
-        setExpoPushToken(token);
+        // setExpoPushToken(token);
 
         // invocation of scheduling of notification for time-in
         await schedulePushNotification(

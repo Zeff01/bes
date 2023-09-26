@@ -16,8 +16,8 @@ import axios from "axios";
 import * as Notifications from "expo-notifications";
 
 const Login = () => {
-  const [email, setEmail] = useState("jeronealimpia@gmail.com");
-  const [password, setPassword] = useState("admin1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
