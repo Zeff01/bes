@@ -1,18 +1,9 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  ActivityIndicator,
-  StyleSheet,
-} from "react-native";
+import { View, Text, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import TimelogHeader from "../components/TimelogHeader";
-import TimelogInfoBox from "../components/TimelogInfoBox";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItem from "../components/TimelogItem";
-import SocialMedia from "../components/SocialMedia";
 
 const Timelog = () => {
   const [data, setData] = useState([]);
@@ -51,21 +42,16 @@ const Timelog = () => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <ScrollView className=" bg-white ">
-          <View className="mx-4">
-            <TimelogHeader />
-            <TimelogInfoBox />
-            <SocialMedia />
+        <ScrollView className="bg-white">
+          <View className="mx-4 mt-10 space-y-4">
             <TimelogTime
               total_ot_hrs={data.total_ot_hrs}
               total_hrs={data.total_hrs}
               total_late_hrs={data.total_late_hrs}
             />
-            <Text className="font-bold text-3xl mb-3 text-[#0B646B]">
-              Time Logs
-            </Text>
           </View>
-          <View className="mb-5">
+          <View className="bg-quinaryColor py-4 rounded-tr-[40] mt-6">
+          <Text className="font-black text-xl tracking-widest text-[#0B646B] p-4">Time Logs</Text>
             {flatData
               .slice()
               .sort((itemA, itemB) => {
