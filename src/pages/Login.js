@@ -113,8 +113,8 @@ const Login = () => {
   };
 
   return (
-    <View className="flex-1 bg-primary justify-start">
-      <View className="pt-[70] w-full h-[85%] items-center justify-end bg-tertiary rounded-b-[70]">
+    <View className="flex-1 bg-primaryColor justify-start">
+      <View className="pt-[70] w-full h-[85%] items-center justify-end bg-senaryColor rounded-b-[70]">
         <View className={isKeyboardOn ? "" : "my-auto"}>
           <View className="justify-center items-center">
             <Image
@@ -184,12 +184,12 @@ const Login = () => {
                   onValueChange={setKeepLoggedIn}
                   value={keepLoggedIn}
                 />
-                <Text className="text-primary text-sm mr-2">
+                <Text className="text-primaryColor text-sm mr-2">
                   Keep me logged in
                 </Text>
               </View>
               <TouchableOpacity>
-                <Text className="text-right text-primary text-sm text-secondary">
+                <Text className="text-right text-primaryColor text-sm text-secondary">
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
@@ -201,7 +201,7 @@ const Login = () => {
             </Text>
           </View> */}
 
-            {/* <TouchableOpacity className="rounded bg-primary p-3 mb-1">
+            {/* <TouchableOpacity className="rounded bg-primaryColor p-3 mb-1">
             <Text className="text-white text-center text-lg">
               Login via Outposter Email
             </Text>
@@ -219,7 +219,7 @@ const Login = () => {
             onPress={handleLogin}
             className="rounded-full w-[140] h-[50] bg-0 justify-center border-4 border-secondary"
           >
-            <Text className="text-white text-center text-xl text-primary">
+            <Text className="text-center text-xl text-primaryColor">
               LOGIN
             </Text>
           </TouchableOpacity>
@@ -227,7 +227,7 @@ const Login = () => {
       </View>
 
       <View className="mx-4 my-auto">
-        <Text className="text-tertiary text-center text-sm ">
+        <Text className="text-white text-center text-sm ">
           Don't have an account? Contact your System Administrator.
         </Text>
       </View>

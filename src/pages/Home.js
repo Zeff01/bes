@@ -1,17 +1,16 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AnalogClock from "react-native-clock-analog";
 import HomeDate from "../components/HomeDate";
 import getPermission from "../utils/getPermission";
 import axios from "axios";
 import TaskCard from "../components/TaskCard";
-import { ScrollView } from "react-native";
 import { formatTime } from "../utils/formatTime";
 import { Permissions } from "expo";
 import { subMinutes, parse, addMinutes } from "date-fns";
 import { useNavigation } from "@react-navigation/native";
 import * as Notifications from "expo-notifications";
+import CustomAnalogClock from "../components/CustomAnalogClock";
 
 const useNowTimer = () => {
   const nowDate = () => {
@@ -49,6 +48,7 @@ const ClockInProvider = ({ children }) => {
     </ClockInContext.Provider>
   );
 };
+
 const requestNotificationPermission = async () => {
   const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
   if (status !== "granted") {
@@ -64,7 +64,7 @@ const scheduleNotification = async (timeIn, timeOut) => {
   const timeInDate = parse(timeIn, "HH:mm:ss", new Date());
   const timeOutDate = parse(timeOut, "HH:mm:ss", new Date());
   const triggerTimeIn = subMinutes(timeInDate, 15);
-  const triggerTimeOut = addMinutes(timeOutDate, 15); 
+  const triggerTimeOut = addMinutes(timeOutDate, 15);
 
   await Notifications.scheduleNotificationAsync({
     content: {
@@ -215,27 +215,19 @@ const Home = () => {
   });
 
   return (
-    <ScrollView className="flex-1 bg-white px-3">
-      
-      <HomeDate dayName={dayName} formattedDate={formattedDate} name={data.name} src={data.avatar} />
+    <ScrollView className="flex-1 bg-white">
+      <HomeDate
+        dayName={dayName}
+        formattedDate={formattedDate}
+        name={data.name}
+        src={data.avatar} />
       {error && <Text>{error}</Text>}
-      <View className=" bg-quinary rounded-xl py-10 px-3 w-full h-auto items-center">
+
+      <View className="rounded-t-xl px-3 w-full h-auto items-center"
+      >
         <View className="items-center">
-          <AnalogClock
-            size={200}
-            key={key}
-            colorClock="#fff"
-            colorNumber="#000000"
-            colorCenter="#000000"
-            colorSeconds="#000000"
-            colorHour="#000000"
-            colorMinutes="#000000"
-            autostart={false}
-            showSeconds
-            hour={hour}
-            minutes={minute}
-            seconds={second}
-          />
+          <CustomAnalogClock />
+
           <Text className="text-gray-400 mt-5 font-normals text-l">
             Schedule: {data.time_in} - {data.time_out}
           </Text>
@@ -243,19 +235,27 @@ const Home = () => {
             {formattedTime}
           </Text>
           <TouchableOpacity
-            className={`mt-6 px-[50px] py-4  ${
-              isClockIn ? "bg-red-500" : "bg-primary "
-            } rounded-full`}
+            className={`mt-6 w-[180px] py-4  ${isClockIn ? "bg-red-500" : "bg-primaryColor"} rounded-full`}
             onPress={handleClockInOut}
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
           >
-            <Text className="text-white font-bold">
-              {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
+            <Text className="text-white text-center font-bold tracking-wider uppercase">
+              {isClockIn ? "Clock out" : "Clock in"}
             </Text>
           </TouchableOpacity>
-          
         </View>
       </View>
-      <View className="mt-5">
+
+      <View>
         <TaskCard />
       </View>
     </ScrollView>
