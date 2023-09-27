@@ -22,13 +22,13 @@ export default function HomeHeader({ name, src }) {
     <View className="bg-white w-full py-5 px-4  rounded-xl mb-3 dark:bg-primary">
       <View className="w-full mb-2 flex-row justify-between items-center">
         <View className="flex gap-2">
-          <Text className="text-md font-bold dark:text-quinary">
+          <Text className="text-md font-light dark:text-quinary">
             Good PM, {name}
           </Text>
-          <Text className="text-4xl font-black text-primary dark:text-quinary">
+          <Text className="text-4xl font-black text-primaryColor dark:text-quinary">
             {dayName}
           </Text>
-          <Text className="text-lg font-bold text-black dark:text-quinary">
+          <Text className="text-lg font-light text-black dark:text-quinary">
             {formattedDate}
           </Text>
         </View>

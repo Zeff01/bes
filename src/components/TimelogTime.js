@@ -25,80 +25,101 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   }, []);
 
   return (
-    <View className="flex gap-2 w-full mt-5 mb-3">
-      <Text className="font-black text-xl tracking-widest text-[#0B646B]">Summary</Text>
+    <View className="flex gap-2 w-full mt-2 mb-3">
       <View className="flex-row space-x-3 mb-1 items-center justify-center w-full mx-3">
-        <View className="bg-white rounded-lg  w-[48%] h-[150px] justify-center items-center" style={{
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    }}>
+        <View className="bg-white rounded-lg w-[48%] h-[150px] justify-center items-center" style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
           <Icon
-            name="timer-outline"
+            name="timer"
             size={30}
-            color="#000"
+            color="#87B0B6"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-sm">Late(Hr/s).</Text>
-          <Text className="text-center text-sm">
-            {total_late_hrs?.toFixed(1)}
+          <Text className="text-2xl font-bold text-secondaryColor">{total_late_hrs?.toFixed(1)}</Text>
+          <Text className="text-center font-light text-sm">Late(Hr/s).</Text>
+          {/* <Text className="text-center text-sm font-light">       
             {total_late_hrs === 1 ? "Hour" : "Hours"}
-          </Text>
+          </Text> */}
         </View>
-        <View className="bg-tertiaryColor justify-center items-center rounded-lg text-center w-[48%] h-[150px]">
-          <Icon
-            name="alarm-outline"
-            size={30}
-            color="#000"
-            className="mx-auto mb-2"
-          />
-          <Text className="text-center font-bold text-sm">Overtime(Hr/s).</Text>
-          <Text className="text-center text-sm">
-            {total_ot_hrs?.toFixed(1)} {total_ot_hrs === 1 ? "Hour" : "Hours"}
-          </Text>
+
+        <View className="bg-white justify-center items-center rounded-lg w-[48%] h-[150px]" style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>        
+            <Icon
+              name="alarm"
+              size={30}
+              color="#87B0B6"
+              className="mx-auto mb-2"
+            />
+            <Text className="text-2xl font-bold text-secondaryColor">{total_ot_hrs?.toFixed(1)}</Text>
+            <Text className="text-center font-light text-sm text-black">Overtime(Hr/s).</Text>
+            {/* <Text className="text-center text-sm font-light text-white">
+              {total_ot_hrs?.toFixed(1)} {total_ot_hrs === 1 ? "Hour" : "Hours"}
+            </Text> */}
         </View>
       </View>
       <View className="flex-row space-x-3 justify-center w-full mx-3">
-        <View className="bg-tertiaryColor justify-center items-center rounded-lg text-center h-[150px] w-[48%]">
+        <View className="bg-white justify-center items-center rounded-lg text-center h-[150px] w-[48%]" style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
           <Icon
-            name="star-outline"
+            name="star"
             size={30}
-            color="#000"
+            color="#87B0B6"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-sm">
+          <Text className="text-2xl font-bold text-secondaryColor">{total_hrs?.toFixed(1)}</Text>
+          <Text className="text-center font-light text-sm">
             Rendered Time(Hr/s).
           </Text>
-          <Text className="text-center text-sm">
+          {/* <Text className="text-center text-sm font-light">
             {total_hrs?.toFixed(1)} {total_hrs === 1 ? "Hour" : "Hours"}
-          </Text>
+          </Text> */}
         </View>
 
         <View className="bg-white justify-center items-center rounded-lg text-center w-[48%] h-[150px]" style={{
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    }}>
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
           <Icon
-            name="time-outline"
+            name="time"
             size={30}
-            color="#000"
+            color="#87B0B6"
             className="mx-auto mb-2"
           />
-          <Text className="text-center font-bold text-sm">Time Schedule</Text>
-          <Text className="text-center text-sm">
+          <Text className="text-2xl font-bold text-secondaryColor">07:00 - 16:00</Text>
+          <Text className="text-center font-light text-sm">Time Schedule</Text>
+          {/* <Text className="text-center text-sm font-light">
             {data.time_in} - {data.time_out}
-          </Text>
+          </Text> */}
         </View>
       </View>
     </View>

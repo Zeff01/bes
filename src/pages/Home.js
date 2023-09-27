@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import HomeHeader from "../components/HomeHeader";
 import TaskCard from "../components/TaskCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AnalogClock from "react-native-clock-analog";
+import CustomAnalogClock from "../components/CustomAnalogClock";
 import { formatTime } from "../utils/formatTime";
 
 // checktokken util func
@@ -98,12 +98,12 @@ const Home = () => {
   }, [sendRequest]);
 
   return (
-    <ScrollView className="flex-1 bg-white px-3 dark:bg-[#11292e]">
+    <ScrollView className="flex-1 bg-white px-3 pt-12">
       <HomeHeader name={data && data.name} src={data && data.avatar} />
       {error && <Text>{error}</Text>}
-      <View className=" bg-quinary rounded-xl py-10 px-3 w-full h-auto items-center dark:bg-[#ffffff40]">
+      <View className="bg-quinary rounded-xl py-10 px-3 w-full h-auto items-center">
         <View className="items-center">
-          <AnalogClock
+          <CustomAnalogClock
             size={200}
             key={key}
             colorClock="#fff"
@@ -121,16 +121,26 @@ const Home = () => {
           <Text className="text-gray-400 mt-5 font-normals text-l dark:text-quinary">
             Schedule: {data && data.time_in} - {data && data.time_out}
           </Text>
-          <Text className="text-gray-300 font-semibold text-6xl mt-4 dark:text-quinary">
+          <Text className="text-gray-300 font-bold text-6xl mt-4 dark:text-quinary">
             {formattedTime}
           </Text>
-          <TouchableOpacity
-            className={`mt-6 w-[180px] py-4  ${
+          <TouchableOpacity 
+          style={{
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}
+            className={`mt-6 w-[180px] py-4 ${
               isClockIn ? "bg-red-500" : "bg-primaryColor"
             } rounded-full`}
             onPress={handleClockInOut}
           >
-            <Text className="text-white font-bold dark:text-quinary">
+            <Text className="text-white font-bold dark:text-quinary text-center">
               {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
             </Text>
           </TouchableOpacity>
