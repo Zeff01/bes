@@ -102,7 +102,7 @@ export default function Profile() {
           <Text className="text-primaryColor text-4xl font-bold text-center">
             {data.name}
           </Text>
-          <Text className="text-blackColor text-xl font-bold text-center">
+          <Text className="text-blackColor text-xl font-semibold text-center">
             {data.position}
           </Text>
         </View>

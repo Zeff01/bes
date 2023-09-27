@@ -11,7 +11,7 @@ export default function TaskCard() {
   };
 
   return (
-    <View className="bg-tertiaryColor rounded-t-[40] py-8 px-5 mt-14 w-full flex">
+    <View className="bg-tertiaryColor rounded-t-[40] py-8 px-5 mt-4 w-full flex">
       <View className="rounded-xl pb-2">
         <View className="flex-row items-center justify-between px-3 pb-3">
           <Text Text className="text-primaryColor font-black text-xl tracking-widest">Tasks</Text>

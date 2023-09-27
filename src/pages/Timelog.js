@@ -42,15 +42,17 @@ const Timelog = () => {
           <ActivityIndicator size="large" />
         </View>
       ) : (
-        <ScrollView className="bg-white">
-          <View className="mx-4 mt-10 space-y-4">
+        <ScrollView className="bg-quinaryColor">
+          <View className="bg-primaryColor h-[150] rounded-bl-[40]"></View>
+          <View className="mx-4 -mt-24 space-y-4 z-10">
+          <Text className="font-black text-xl tracking-widest text-white">Summary</Text>
             <TimelogTime
               total_ot_hrs={data.total_ot_hrs}
               total_hrs={data.total_hrs}
               total_late_hrs={data.total_late_hrs}
             />
           </View>
-          <View className="bg-quinaryColor py-4 rounded-tr-[40] mt-6">
+          <View className="bg-white py-4 rounded-tr-[40] mt-10">
           <Text className="font-black text-xl tracking-widest text-[#0B646B] p-4">Time Logs</Text>
             {flatData
               .slice()
