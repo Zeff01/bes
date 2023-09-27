@@ -15,7 +15,7 @@ const useAxios = () => {
         method: reqConfig.method ? reqConfig.method : "GET",
         // if headers is not provided then it is default to object
         headers: reqConfig.headers ? reqConfig.headers : {},
-        data: reqConfig.body ? JSON.stringify(requestConfig.body) : null,
+        data: reqConfig.body ? JSON.stringify(reqConfig.body) : null,
       });
 
       if (response.status !== 200) {
