@@ -10,11 +10,14 @@ const useAxios = () => {
     setError(null);
 
     try {
-      const response = await axios(reqConfig.url, {
-        // if method is not provided then it is default to "GET"
+      const response = await axios({
+        // url
+        url: reqConfig.url,
+        // method - if method is not provided then it is default to "GET"
         method: reqConfig.method ? reqConfig.method : "GET",
-        // if headers is not provided then it is default to object
+        // headers - if headers is not provided then it is default to object
         headers: reqConfig.headers ? reqConfig.headers : {},
+        // body - if post method is used.
         data: reqConfig.body ? JSON.stringify(reqConfig.body) : null,
       });
 
@@ -22,9 +25,9 @@ const useAxios = () => {
         throw new Error("Request failed!");
       }
 
+      // this data should be equal to the data that you gonna get after the request.
       const data = response.data;
       // console.log("THE DATA COMING FROM USE-HTTP HOOK: ", data);
-      // applyData(data);
       applyData(data);
     } catch (err) {
       setError("Something went wrong!: ", err);
