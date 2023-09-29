@@ -4,6 +4,8 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { Asset } from "expo-asset";
+import { setupNotifChannel } from "../utils/setupNotifChannel";
+import { getPermission } from "../utils/getPermission";
 
 // setting up custom notification handler - this will execute whenever notification is received.
 Notifications.setNotificationHandler({
@@ -24,32 +26,6 @@ const NOTIFICATION_TITLES = {
 const NOTIFICATION_MESSAGES = {
   TIME_IN: "15 minutes before time-in.",
   TIME_OUT: "15 minutes before time-out.",
-};
-
-// notif channel - to customize desired notification when displayed on android.
-const setupNotificationChannel = async () => {
-  if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
-    });
-  }
-};
-
-// requesting permission async func(allow or not)
-const requestNotificationPermissions = async () => {
-  const { status: existingStatus } = await Notifications.getPermissionsAsync();
-  let finalStatus = existingStatus;
-
-  if (existingStatus !== "granted") {
-    const { status } = await Notifications.requestPermissionsAsync();
-    finalStatus = status;
-  }
-  console.log(finalStatus);
-
-  return finalStatus;
 };
 
 // getting token from projectId(need for sending specifc notif "to")
@@ -120,8 +96,9 @@ export const Notification = () => {
       await logoAsset.downloadAsync();
 
       try {
+        // notif channel - to customize desired notification when displayed on android.
         // invocation of the channel which is needed to customize desired display notification.
-        await setupNotificationChannel();
+        await setupNotifChannel();
 
         // send an alert if dev is using simulator
         if (!Device.isDevice) {
@@ -130,13 +107,8 @@ export const Notification = () => {
           );
         }
 
-        // invocation of request permission and put it in constant var "finalStatus"
         // if this is denied you won't get notifications.
-        const finalStatus = await requestNotificationPermissions();
-        if (finalStatus !== "granted") {
-          alert("Failed to get push token for push notification!");
-          return;
-        }
+        await getPermission();
 
         // invocation of getting the token
         const token = await getToken();

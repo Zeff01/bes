@@ -13,8 +13,6 @@ import { getToken } from "../utils/getToken";
 // custom hooks
 import useAxios from "../hooks/use-axios";
 import useTimer from "../hooks/use-timer";
-// import useToken from "../hooks/use-token";
-//
 
 const BASE_URL = "https://bes.outposter.com.au/api";
 
@@ -28,8 +26,6 @@ const Home = () => {
   // useAxios hook
   const { isLoading, error, sendRequest } = useAxios();
   // useToken
-
-  // console.log(token);
 
   const formattedTime = formatTime(hour, minute);
   const key = `${hour}:${minute}:${second}`;

@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
-import getPermission from "../getPermission";
-import reqNotifPermission from "./reqNotifPermission";
-import scheduleNotif from "./scheduleNotif";
-import getToken from "../getToken";
+import { reqNotifPermission } from "./reqNotifPermission";
+
+import { scheduleNotif } from "./scheduleNotif";
+import { getToken } from "../getToken";
+import { setupNotifChannel } from "../setupNotifChannel";
+import { getPermission } from "../getPermission";
 
 // call this inside useEffect in Home func
 export const checkToken = async (data) => {
@@ -23,6 +25,7 @@ export const checkToken = async (data) => {
     if (token) {
       reqNotifPermission();
       getPermission();
+      setupNotifChannel();
     }
   } catch (error) {
     console.error("Error Checking Token: ", error);
