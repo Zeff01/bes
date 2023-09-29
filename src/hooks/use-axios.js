@@ -25,9 +25,9 @@ const useAxios = () => {
         throw new Error("Request failed!");
       }
 
+      // this data should be equal to the data that you gonna get after the request.
       const data = response.data;
       // console.log("THE DATA COMING FROM USE-HTTP HOOK: ", data);
-      // applyData(data);
       applyData(data);
     } catch (err) {
       setError("Something went wrong!: ", err);

@@ -11,7 +11,7 @@ import { checkToken } from "../utils/Home/checkToken";
 import { getToken } from "../utils/getToken";
 
 // custom hooks
-import useHttp from "../hooks/use-axios";
+import useAxios from "../hooks/use-axios";
 import useTimer from "../hooks/use-timer";
 // import useToken from "../hooks/use-token";
 //
@@ -25,8 +25,8 @@ const Home = () => {
   // - custom hooks -
   // useTimer hook
   const { second, minute, hour } = useTimer();
-  // useHttp hook
-  const { isLoading, error, sendRequest } = useHttp();
+  // useAxios hook
+  const { isLoading, error, sendRequest } = useAxios();
   // useToken
 
   // console.log(token);
@@ -42,24 +42,35 @@ const Home = () => {
     setIsClockIn(!isClockIn);
     AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));
 
-    sendRequest({
-      url: `${BASE_URL}/clock`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const processData = (objData) => {
+      // this is the data when clicking the handler
+      console.log("OBJECT DATA FROM CLOCK-IN/OUT HANDLER: ", objData);
+    };
+
+    sendRequest(
+      {
+        url: `${BASE_URL}/clock`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       },
-    });
+      processData
+    );
   };
 
+  // fetching ClockIn/Out status
   const fetchClockInStatus = async () => {
     try {
+      // getting the AsyncStorage status
       const savedStatus = await AsyncStorage.getItem("@clock_in_status");
+      // if the status is not null or has a value then set the ClockIn state to that value.
       if (savedStatus !== null) {
         setIsClockIn(JSON.parse(savedStatus));
       }
     } catch (err) {
-      console.log("Failed to fetch clock in status: ", e);
+      console.log("Failed to fetch clock in status: ", err);
     }
   };
 
