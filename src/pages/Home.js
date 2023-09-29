@@ -40,7 +40,7 @@ const Home = () => {
     console.log("TOKEN IN HandleClockInOut:", token);
 
     setIsClockIn(!isClockIn);
-    AsyncStorage.setItem("@clock_in_status", JSON.stringify(isClockIn));
+    AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));
 
     sendRequest({
       url: `${BASE_URL}/clock`,
@@ -124,17 +124,17 @@ const Home = () => {
           <Text className="text-gray-300 font-bold text-6xl mt-4 dark:text-quinary">
             {formattedTime}
           </Text>
-          <TouchableOpacity 
-          style={{
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 0,
-              height: 2,
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5,
-          }}
+          <TouchableOpacity
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
             className={`mt-6 w-[180px] py-4 ${
               isClockIn ? "bg-red-500" : "bg-primaryColor"
             } rounded-full`}
