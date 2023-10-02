@@ -24,6 +24,9 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
     fetchData();
   }, []);
 
+  const formattedTimeIn = String(data.time_in).slice(0, 5);
+const formattedTimeOut = String(data.time_out).slice(0, 5);
+
   return (
     <View className="flex gap-2 w-full mt-2 mb-3">
       <View className="flex-row space-x-3 mb-1 items-center justify-center w-full mx-3">
@@ -44,10 +47,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             className="mx-auto mb-2"
           />
           <Text className="text-2xl font-bold text-secondaryColor">{total_late_hrs?.toFixed(1)}</Text>
-          <Text className="text-center font-light text-sm">Late(Hr/s).</Text>
-          {/* <Text className="text-center text-sm font-light">       
-            {total_late_hrs === 1 ? "Hour" : "Hours"}
-          </Text> */}
+          <Text className="text-center font-light text-sm">Late(Hr/s)</Text>
         </View>
 
         <View className="bg-white justify-center items-center rounded-lg w-[48%] h-[150px]" style={{
@@ -67,10 +67,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
               className="mx-auto mb-2"
             />
             <Text className="text-2xl font-bold text-secondaryColor">{total_ot_hrs?.toFixed(1)}</Text>
-            <Text className="text-center font-light text-sm text-black">Overtime(Hr/s).</Text>
-            {/* <Text className="text-center text-sm font-light text-white">
-              {total_ot_hrs?.toFixed(1)} {total_ot_hrs === 1 ? "Hour" : "Hours"}
-            </Text> */}
+            <Text className="text-center font-light text-sm text-black">Overtime(Hr/s)</Text>
         </View>
       </View>
       <View className="flex-row space-x-3 justify-center w-full mx-3">
@@ -92,11 +89,8 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
           />
           <Text className="text-2xl font-bold text-secondaryColor">{total_hrs?.toFixed(1)}</Text>
           <Text className="text-center font-light text-sm">
-            Rendered Time(Hr/s).
+            Rendered Time(Hr/s)
           </Text>
-          {/* <Text className="text-center text-sm font-light">
-            {total_hrs?.toFixed(1)} {total_hrs === 1 ? "Hour" : "Hours"}
-          </Text> */}
         </View>
 
         <View className="bg-white justify-center items-center rounded-lg text-center w-[48%] h-[150px]" style={{
@@ -115,11 +109,8 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
             color="#87B0B6"
             className="mx-auto mb-2"
           />
-          <Text className="text-2xl font-bold text-secondaryColor">07:00 - 16:00</Text>
+          <Text className="text-2xl font-bold text-secondaryColor">{formattedTimeIn} - {formattedTimeOut}</Text>
           <Text className="text-center font-light text-sm">Time Schedule</Text>
-          {/* <Text className="text-center text-sm font-light">
-            {data.time_in} - {data.time_out}
-          </Text> */}
         </View>
       </View>
     </View>

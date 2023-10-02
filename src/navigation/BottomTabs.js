@@ -24,14 +24,14 @@ export default function BottomTabs() {
             iconName = focused ? "ios-person" : "ios-person-outline";
           }
 
-          return <Ionicons name={iconName} size={35} color={"#0B646B"} />;
+          return <Ionicons name={iconName} size={30} color={"#0B646B"} />;
         },
         tabBarActiveTintColor: "#0B646B",
         tabBarInactiveTintColor: "#0B646B",
         tabBarStyle: {
           height: 70,
-          paddingBottom: 15,
-          paddingTop: 5,
+          paddingBottom: 10,
+          paddingTop: 10,
         },
         tabBarLabel: "",
       })}

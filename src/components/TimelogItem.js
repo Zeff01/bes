@@ -36,17 +36,24 @@ const TimelogItem = ({
   const stoppedAt = format(new Date(stopped_at), "h:mm a");
 
   return (
-    <View className="rounded-lg flex px-3 mx-8 mb-4 py-2 border-quinaryColor border">
-      <View className=" justify-between my-2">
-        <View className="flex-row gap-5 items-center ">
+    <View className="bg-white rounded-lg flex px-3 mx-5 mb-5 py-2 border-quinaryColor border" style={{
+      shadowColor: "#000",
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.20,
+      shadowRadius: 3.84,
+      elevation: 5,
+    }}>
+      <View className=" justify-between my-4">
+        <View className="flex-row gap-5 items-center">
           <TouchableOpacity>
-            <Text className="text-lg font-bold">{data.name}Jerone</Text>
+            <Text className="text-lg font-normal px-3">{data.name}Jerone Alimpia</Text>
           </TouchableOpacity>
         </View>
-        <View className="flex gap-5 border-t-[1px] border-quinaryColor pt-2 mt-2 mx-2">
-          {/* <TimelogItemDetails label="Item ID:" value={id} /> */}
+        <View className="flex gap-5 border-t-[1px] border-quinaryColor pt-2 mt-2 mx-3">
           <TimelogItemDetails icon="clipboard" label="Note:" value={note} />
-          {/* <TimelogItemDetails label="User ID:" value={user_id} /> */}
           <TimelogItemDetails icon="calendar" label="Date:" value={formattedDate} />
           <TimelogItemDetails icon="enter" label="Clockin:" value={startedAt} />
           <TimelogItemDetails icon="exit" label="Clockout:" value={stoppedAt} />
