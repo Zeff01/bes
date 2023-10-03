@@ -45,7 +45,7 @@ const Timelog = () => {
         <ScrollView className="bg-quinaryColor">
           <View className="bg-primaryColor h-[150] rounded-bl-[40]"></View>
           <View className="mx-4 -mt-24 space-y-4 z-10">
-          <Text className="font-black text-xl tracking-widest text-white">Summary</Text>
+          <Text className="text-lg font-light tracking-widest text-white uppercase text-center">Summary</Text>
             <TimelogTime
               total_ot_hrs={data.total_ot_hrs}
               total_hrs={data.total_hrs}
@@ -53,7 +53,7 @@ const Timelog = () => {
             />
           </View>
           <View className="bg-white py-4 rounded-tr-[40] mt-10">
-          <Text className="font-black text-xl tracking-widest text-[#0B646B] p-4">Time Logs</Text>
+          <Text className="text-lg font-light tracking-widest text-[#0B646B] p-4 uppercase text-center">Time Logs</Text>
             {flatData
               .slice()
               .sort((itemA, itemB) => {

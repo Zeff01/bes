@@ -128,7 +128,7 @@ const Login = () => {
               className={
                 emailError
                   ? "mt-4 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
-                  : "mt-4 mb-6 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                  : "mt-4 mb-3 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
               }
             >
               <TextInput
@@ -150,7 +150,7 @@ const Login = () => {
               className={
                 passwordError
                   ? "mt-2 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
-                  : "mt-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                  : "mt-2 mb-3 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
               }
             >
               <TextInput
@@ -185,7 +185,7 @@ const Login = () => {
                   value={keepLoggedIn}
                 />
                 <Text className="text-primaryColor text-sm mr-2">
-                  Keep me logged in
+                  Keep me logged in.
                 </Text>
               </View>
               <TouchableOpacity>
@@ -217,9 +217,19 @@ const Login = () => {
         >
           <TouchableOpacity
             onPress={handleLogin}
-            className="rounded-full w-[140] h-[50] bg-0 justify-center border-4 border-[#87b0b6]"
+            className="bg-primaryColor rounded-full w-[140] h-[50] bg-0 justify-center" style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.35,
+              shadowRadius: 1.84,
+              elevation: 5,
+            }}
+            
           >
-            <Text className="text-white text-center text-xl text-primaryColor">
+            <Text className="text-white font-bold text-center">
               LOGIN
             </Text>
           </TouchableOpacity>

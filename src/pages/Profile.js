@@ -36,10 +36,10 @@ function SignOut() {
 
 function PersonalInfo({ iconName, text, content }) {
   return (
-    <View className="justify-center items-center flex-row w-full px-[30] py-[4]">
-      <View className="ml-20 pl-10 flex-row w-full justify-start items-center">
-        <Ionicons name={iconName} size={22} color="#2B6673" />
-        <Text className="ml-3 text-base text-primaryColor">{content}</Text>
+    <View className="flex-row p-4 bg-white m-2 rounded-full border-b border-r border-gray-300">
+      <View className="flex-row w-full gap-3 items-center justify-center">
+        <Ionicons name={iconName} size={22} color="#87B0B6" />
+        <Text className="text-base text-primaryColor">{content}</Text>
       </View>
     </View>
   );
@@ -81,9 +81,9 @@ export default function Profile() {
 
   return (
     <SafeAreaView className="flex-1 bg-tertiaryColor justify-end relative">
-      <View className="h-[700] w-[700] rounded-full bg-primaryColor absolute left-[-460] top-[-350]"></View>
-      <View className="h-[690] w-[690] rounded-full bg-secondaryColor absolute left-[30] top-[50]"></View>
-      <View className="flex-[0.80] bg-whiteColor rounded-t-[50] items-center">
+      <View className="h-[700] w-[700] rounded-full bg-primaryColor absolute left-[-260] top-[-90]"></View>
+      <View className="h-[690] w-[690] rounded-full bg-secondaryColor absolute left-[50] top-[0]"></View>
+      <View className="flex-[0.80] bg-quinaryColor rounded-t-[50] items-center">
         <View className="h-[126] w-[126] rounded-full bg-gray-300 top-[-63] justify-center items-center absolute">
           <View className="h-[120] w-[120] rounded-full bg-primaryColor justify-center items-center absolute">
             <Image
@@ -99,34 +99,43 @@ export default function Profile() {
           </View>
         </View>
         <View className="mt-[70] mb-[20]">
-          <Text className="text-primaryColor text-4xl font-bold text-center">
+          <Text className="text-primaryColor text-4xl font-black text-center mt-3">
             {data.name}
           </Text>
-          <Text className="text-blackColor text-xl font-semibold text-center">
+          <Text className="text-blackColor text-md font-light text-center uppercase tracking-widest">
             {data.position}
           </Text>
         </View>
-        <View className="flex-1 justify-between">
+        <View className="flex-1 justify-between p-12">
           <View>
             <PersonalInfo
-              iconName={"mail-outline"}
+              iconName={"mail"}
               text={"EMAIL"}
               content={data.email}
             />
             <PersonalInfo
-              iconName={"call-outline"}
+              iconName={"call"}
               text={"PHONE NUMBER"}
               content={data.phone}
             />
             {formattedBirthDate ? (
               <PersonalInfo
-                iconName={"calendar-outline"}
+                iconName={"calendar"}
                 text={"BIRTHDAY"}
                 content={formattedBirthDate}
               />
             ) : null}
           </View>
-          <View className="justify-end mb-[20] items-center">
+          <View className="justify-end mb-[20] items-center" style={{
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 5,
+        }}>
             <SignOut />
           </View>
         </View>
