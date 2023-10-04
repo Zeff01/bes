@@ -1,26 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   FlatList,
   ActivityIndicator,
   Text,
   TouchableOpacity,
-  StyleSheet,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItem from "../components/TimelogItem";
+import { useIsFocused } from "@react-navigation/native";
 
 const Timelog = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(20);
+  const [itemsPerPage] = useState(10);
   const [pageNumberLimit] = useState(5);
   const [maxPageNumberLimit, setMaxPageNumberLimit] = useState(5);
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(1);
+  const flatListRef = useRef();
+  const isFocused = useIsFocused();
+
+  const handleScrollToTop = (offsetDistance) => {
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({
+        offset: offsetDistance,
+        animated: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      handleScrollToTop(0);
+    }
+  }, [isFocused]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +77,7 @@ const Timelog = () => {
   const pages = Math.ceil(flatData.length / itemsPerPage);
 
   const handlePageClick = (page) => {
+    handleScrollToTop(420);
     setCurrentPage(page);
   };
 
@@ -74,17 +92,16 @@ const Timelog = () => {
     )
     .map((page) => (
       <TouchableOpacity
-        className={`mx-[5] rounded-full w-[40] h-[40] justify-center items-center ${
+        className={`mx-[2] rounded-full w-[30] h-[30] justify-center items-center ${
           currentPage === page ? "bg-primaryColor" : "bg-transparent"
         }`}
         key={page}
         onPress={() => handlePageClick(page)}
       >
         <Text
-          style={{
-            fontSize: 16,
-            color: currentPage === page ? "white" : "black",
-          }}
+          className={`text-xs ${
+            currentPage === page ? "text-whiteColor" : "text-blackColor"
+          }`}
         >
           {page}
         </Text>
@@ -93,7 +110,7 @@ const Timelog = () => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View className="flex-1 justify-center items-center p-[10]">
         <ActivityIndicator size="large" />
       </View>
     );
@@ -113,6 +130,7 @@ const Timelog = () => {
   );
 
   const handlePrevButton = () => {
+    handleScrollToTop(420);
     if (minPageNumberLimit !== 1) {
       if (currentPage === minPageNumberLimit) {
         setCurrentPage(currentPage - 1);
@@ -125,6 +143,7 @@ const Timelog = () => {
   };
 
   const handleNextButton = () => {
+    handleScrollToTop(420);
     if (maxPageNumberLimit < pages) {
       if (currentPage === maxPageNumberLimit) {
         setCurrentPage(currentPage + 1);
@@ -136,38 +155,88 @@ const Timelog = () => {
     }
   };
 
-  let pageDecrementButton = null;
-  if (minPageNumberLimit > 1) {
-    pageDecrementButton = (
-      <TouchableOpacity
-        className="w-[40] h-[40] justify-center items-center"
-        onPress={handlePrevButton}
-      >
-        <Ionicons name={"caret-back-outline"} size={40} color={"#0B646B"} />
-      </TouchableOpacity>
-    );
-  }
+  const handlePrevSet = () => {
+    handleScrollToTop(420);
+    if (minPageNumberLimit !== 1) {
+      setCurrentPage(minPageNumberLimit - 5);
+      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
+    }
+  };
 
-  let pageIncrementButton = null;
-  if (maxPageNumberLimit < pages) {
-    pageIncrementButton = (
-      <TouchableOpacity
-        className="justify-center items-center"
-        onPress={handleNextButton}
-      >
-        <Ionicons name={"caret-forward-outline"} size={40} color={"#0B646B"} />
-      </TouchableOpacity>
-    );
-  }
+  const handleNextSet = () => {
+    handleScrollToTop(420);
+    if (maxPageNumberLimit < pages) {
+      setCurrentPage(maxPageNumberLimit + 1);
+      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+    }
+  };
+
+  let pageDecrementButton = (
+    <TouchableOpacity
+      className="w-[40] h-[40] justify-center items-center"
+      onPress={handlePrevButton}
+      disabled={minPageNumberLimit > 1 ? false : true}
+    >
+      <Ionicons
+        name={"chevron-back-outline"}
+        size={24}
+        color={"#0B646B"}
+        style={{ opacity: minPageNumberLimit > 1 ? 1 : 0.2 }}
+      />
+    </TouchableOpacity>
+  );
+
+  let pageIncrementButton = (
+    <TouchableOpacity
+      className="justify-center items-center"
+      onPress={handleNextButton}
+      disabled={maxPageNumberLimit < pages ? false : true}
+    >
+      <Ionicons
+        name={"chevron-forward-outline"}
+        size={24}
+        color={"#0B646B"}
+        style={{ opacity: maxPageNumberLimit < pages ? 1 : 0.2 }}
+      />
+    </TouchableOpacity>
+  );
+
+  let prevSet = (
+    <TouchableOpacity
+      className="justify-center items-center"
+      onPress={handlePrevSet}
+      disabled={minPageNumberLimit > 1 ? false : true}
+    >
+      <Ionicons
+        name={"chevron-back-outline"}
+        size={24}
+        color={"#0B646B"}
+        style={{ opacity: minPageNumberLimit > 1 ? 1 : 0.2 }}
+      />
+    </TouchableOpacity>
+  );
+
+  let nextSet = (
+    <TouchableOpacity
+      className="justify-center items-center"
+      onPress={handleNextSet}
+      disabled={maxPageNumberLimit < pages ? false : true}
+    >
+      <Ionicons
+        name={"chevron-forward-outline"}
+        size={24}
+        color={"#0B646B"}
+        style={{ opacity: maxPageNumberLimit < pages ? 1 : 0.2 }}
+      />
+    </TouchableOpacity>
+  );
 
   return (
-    <View>
-      <View style={styles.paginationContainer}>
-        {pageDecrementButton}
-        {renderPageNumbers}
-        {pageIncrementButton}
-      </View>
+    <View className="flex-1">
       <FlatList
+        ref={flatListRef}
         data={currentItems}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
@@ -189,30 +258,20 @@ const Timelog = () => {
             </Text>
           </>
         )}
-        style={styles.flatList}
       />
+      <View className="items-center ">
+        <View className="absolute bottom-0 ">
+          <View className="flex-row justify-center items-center mt-[35] bg-secondaryColor rounded-full px-[20] mb-[5] h-[50]">
+            {prevSet}
+            {pageDecrementButton}
+            {renderPageNumbers}
+            {pageIncrementButton}
+            {nextSet}
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 10,
-  },
-  flatList: {
-    backgroundColor: "white",
-    paddingVertical: 4,
-    borderTopRightRadius: 40,
-    marginTop: 10,
-  },
-  paginationContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 35,
-  },
-});
 
 export default Timelog;
