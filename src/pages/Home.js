@@ -25,7 +25,6 @@ const Home = () => {
   const { second, minute, hour } = useTimer();
   // useAxios hook
   const { isLoading, error, sendRequest } = useAxios();
-  // useToken
 
   const formattedTime = formatTime(hour, minute);
   const key = `${hour}:${minute}:${second}`;

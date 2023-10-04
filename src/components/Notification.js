@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Platform, Vibration } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -6,6 +6,8 @@ import Constants from "expo-constants";
 import { Asset } from "expo-asset";
 import { setupNotifChannel } from "../utils/setupNotifChannel";
 import { getPermission } from "../utils/getPermission";
+// for testing
+import Button from "../components/forTestingNotification/Button";
 
 // setting up custom notification handler - this will execute whenever notification is received.
 Notifications.setNotificationHandler({
@@ -15,6 +17,19 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+// FOR TESTING NOTIFICATION BTN ONLY
+const TEST_NOTIFICATION = {
+  SEND_NOW: {
+    TITLE: "TEST NOTIF FOR SEND NOW",
+    MESSAGE: "HELLO WORLD FROM SEND NOW",
+  },
+  SEND_DELAY: {
+    TITLE: "TEST NOTIF FOR 5 SEC. DELAY",
+    MESSAGE: "HELLO WORLD FROM 5 SEC DELAY",
+  },
+};
+//
 
 // notif titles
 const NOTIFICATION_TITLES = {
@@ -46,7 +61,8 @@ const schedulePushNotification = async (
   body,
   hour,
   minute,
-  localUri
+  localUri,
+  seconds
 ) => {
   try {
     // 1st object parameter of scheduleNotificationAsync
@@ -66,11 +82,24 @@ const schedulePushNotification = async (
     };
 
     // 2nd object parameter of scheduleNotificationAsync
-    const triggerOptions = {
-      hour,
-      minute,
-      repeats: true,
-    };
+    let triggerOptions;
+    // FOR TESTING
+    if (seconds) {
+      triggerOptions = {
+        // FOR TESTING
+        seconds,
+        //
+      };
+    } else if (!hour && !minute && !seconds) {
+      triggerOptions = null;
+    } else if (hour && minute) {
+      //
+      triggerOptions = {
+        hour,
+        minute,
+        repeats: true,
+      };
+    }
 
     // invocation
     await Notifications.scheduleNotificationAsync({
@@ -84,7 +113,7 @@ const schedulePushNotification = async (
 
 // Notification Comp
 export const Notification = () => {
-  // const [expoPushToken, setExpoPushToken] = useState("");
+  const [token, setToken] = useState("");
   const notificationListener = useRef();
 
   // import logo icon(for banner notif)
@@ -111,14 +140,14 @@ export const Notification = () => {
         await getPermission();
 
         // invocation of getting the token
-        const token = await getToken();
+        const gettingToken = await getToken();
+        setToken(gettingToken);
         if (!token) {
           console.error("Failed to get Expo push token.");
           return;
         }
 
-        console.log("token: ", token);
-        // setExpoPushToken(token);
+        // console.log("token: ", token);
 
         // invocation of scheduling of notification for time-in
         await schedulePushNotification(
@@ -127,7 +156,8 @@ export const Notification = () => {
           NOTIFICATION_MESSAGES.TIME_IN,
           6,
           45,
-          logoAsset.localUri
+          logoAsset.localUri,
+          0
         );
 
         // invocation of scheduling of notification for time-out
@@ -137,7 +167,8 @@ export const Notification = () => {
           NOTIFICATION_MESSAGES.TIME_OUT,
           15,
           45,
-          logoAsset.localUri
+          logoAsset.localUri,
+          0
         );
 
         return token;
@@ -169,4 +200,56 @@ export const Notification = () => {
       );
     };
   }, []);
+
+  // FOR TESTING BTN NOTIFICATION ONLY
+  return (
+    <>
+      <Button
+        scheduleNotifFunc={async () =>
+          await schedulePushNotification(
+            token,
+            TEST_NOTIFICATION.SEND_NOW.TITLE,
+            TEST_NOTIFICATION.SEND_NOW.MESSAGE,
+            null,
+            null,
+            logoAsset.localUri,
+            0
+          )
+        }
+        value="Send Notif Now!"
+        style={{
+          position: "absolute",
+          top: 50,
+          left: 20,
+          zIndex: 99,
+          backgroundColor: "transparent",
+          padding: 10,
+          borderRadius: 5,
+        }}
+      />
+      <Button
+        scheduleNotifFunc={async () =>
+          await schedulePushNotification(
+            token,
+            TEST_NOTIFICATION.SEND_DELAY.TITLE,
+            TEST_NOTIFICATION.SEND_DELAY.MESSAGE,
+            null,
+            null,
+            logoAsset.localUri,
+            5
+          )
+        }
+        value="Send Notif 5 sec delay"
+        style={{
+          position: "absolute",
+          top: 120,
+          left: 20,
+          zIndex: 99,
+          backgroundColor: "transparent",
+          padding: 10,
+          borderRadius: 5,
+        }}
+      />
+    </>
+  );
 };
