@@ -1,4 +1,5 @@
 import { Platform } from "react-native";
+import * as Notifications from "expo-notifications";
 
 export const setupNotifChannel = async () => {
   if (Platform.OS === "android") {
