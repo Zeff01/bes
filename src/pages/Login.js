@@ -217,7 +217,8 @@ const Login = () => {
         >
           <TouchableOpacity
             onPress={handleLogin}
-            className="bg-primaryColor rounded-full w-[140] h-[50] bg-0 justify-center" style={{
+            className="bg-primaryColor rounded-full w-[140] h-[50] bg-0 justify-center"
+            style={{
               shadowColor: "#000",
               shadowOffset: {
                 width: 0,
@@ -227,11 +228,8 @@ const Login = () => {
               shadowRadius: 1.84,
               elevation: 5,
             }}
-            
           >
-            <Text className="text-white font-bold text-center">
-              LOGIN
-            </Text>
+            <Text className="text-white font-bold text-center">LOGIN</Text>
           </TouchableOpacity>
         </View>
       </View>
