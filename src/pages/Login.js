@@ -112,7 +112,7 @@ const Login = () => {
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
-        
+
         dispatch(authActions.loginUser());
 
       } catch (error) {
@@ -187,7 +187,6 @@ const Login = () => {
               }
             >
               <TextInput
-                color={themeIs === "light" ? "#2B6673" : "#F5F5FA"}
                 color={themeIs === "light" ? "#2B6673" : "#F5F5FA"}
                 label="Password"
                 placeholder="Password"
