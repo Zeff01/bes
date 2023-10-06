@@ -11,3 +11,5 @@ export const setupNotifChannel = async () => {
     });
   }
 };
+
+export default setupNotifChannel;

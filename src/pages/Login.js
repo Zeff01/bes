@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ThemeContext from "../store/darkMode/theme-context";
 
 import axios from "axios";
 import * as Notifications from "expo-notifications";
@@ -23,6 +24,7 @@ const Login = () => {
   const [passwordError, setPasswordError] = useState("");
   const [isKeyboardOn, setIsKeyboardOn] = useState(false);
   const navigation = useNavigation();
+  const { themeIs } = useContext(ThemeContext);
 
   //For responsiveness of UI when keyboard is on or off
   useEffect(() => {
@@ -113,8 +115,18 @@ const Login = () => {
   };
 
   return (
-    <View className="flex-1 bg-primaryColor justify-start">
-      <View className="pt-[70] w-full h-[85%] items-center justify-end bg-tertiaryColor rounded-b-[70]">
+    <View
+      className={`${
+        themeIs === "light" ? "bg-primaryColor" : "bg-darkPrimary"
+      } flex-1 justify-start`}
+    >
+      <View
+        className={`${
+          themeIs === "light"
+            ? "bg-tertiaryColor"
+            : "bg-darkTertiary border border-darkSenary"
+        } pt-[70] w-full h-[85%] items-center justify-end rounded-b-[70]`}
+      >
         <View className={isKeyboardOn ? "" : "my-auto"}>
           <View className="justify-center items-center">
             <Image
@@ -126,16 +138,24 @@ const Login = () => {
             <View className="border-t border-red-300 my-2 bg-red-500"></View>
             <View
               className={
-                emailError
-                  ? "mt-4 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
-                  : "mt-4 mb-3 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                themeIs === "light"
+                  ? emailError
+                    ? "mt-4 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                    : "mt-4 mb-3 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                  : themeIs === "dark"
+                  ? emailError
+                    ? "mt-4 mb-2 pl-5 bg-darkSenary h-[40] w-[250] rounded-full justify-center"
+                    : "mt-4 mb-3 pl-5 bg-darkQuarternary h-[40] w-[250] rounded-full justify-center"
+                  : null
               }
             >
               <TextInput
-                color="#2B6673"
+                color={themeIs === "light" ? "#2B6673" : "#F5F5FA"}
                 label="Email address"
                 placeholder="Email"
-                placeholderTextColor="#808080"
+                placeholderTextColor={
+                  themeIs === "light" ? "#808080" : "#F5F5FA"
+                }
                 onChangeText={handleEmailChange}
                 value={email}
               />
@@ -148,16 +168,24 @@ const Login = () => {
 
             <View
               className={
-                passwordError
-                  ? "mt-2 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
-                  : "mt-2 mb-3 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                themeIs === "light"
+                  ? passwordError
+                    ? "mt-2 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                    : "mt-2 mb-2 pl-5 bg-white h-[40] w-[250] rounded-full justify-center"
+                  : themeIs === "dark"
+                  ? passwordError
+                    ? "mt-2 mb-2 pl-5 bg-darkSenary h-[40] w-[250] rounded-full justify-center"
+                    : "mt-2 mb-2 pl-5 bg-darkQuarternary h-[40] w-[250] rounded-full justify-center"
+                  : null
               }
             >
               <TextInput
-                color="#2B6673"
+                color={themeIs === "light" ? "#2B6673" : "#F5F5FA"}
                 label="Password"
                 placeholder="Password"
-                placeholderTextColor="#808080"
+                placeholderTextColor={
+                  themeIs === "light" ? "#808080" : "#F5F5FA"
+                }
                 secureTextEntry
                 onChangeText={handlePasswordChange}
                 value={password}
@@ -184,28 +212,22 @@ const Login = () => {
                   onValueChange={setKeepLoggedIn}
                   value={keepLoggedIn}
                 />
-                <Text className="text-primaryColor text-sm mr-2">
+                <Text
+                  className={`${
+                    themeIs === "light"
+                      ? "text-primaryColor"
+                      : "text-darkSenary"
+                  } text-sm mr-2`}
+                >
                   Keep me logged in.
                 </Text>
               </View>
               <TouchableOpacity>
-                <Text className="text-right text-primaryColor text-sm text-secondaryColor">
+                <Text className="text-secondaryColor text-right text-sm">
                   Forgot Password?
                 </Text>
               </TouchableOpacity>
             </View>
-
-            {/* <View className=" p-2">
-            <Text className="text-center text-gray-500 text-lg">
-              Welcome back! Please login to your account.
-            </Text>
-          </View> */}
-
-            {/* <TouchableOpacity className="rounded bg-primaryColor p-3 mb-1">
-            <Text className="text-white text-center text-lg">
-              Login via Outposter Email
-            </Text>
-          </TouchableOpacity> */}
           </View>
         </View>
         <View

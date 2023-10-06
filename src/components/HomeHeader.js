@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { View, Text, Image } from "react-native";
+import ThemeContext from "../store/darkMode/theme-context";
 
 export default function HomeHeader({ name, src }) {
+  const { themeIs } = useContext(ThemeContext);
   const newDate = new Date();
   const dayName = [
     "Sunday",
@@ -19,16 +22,32 @@ export default function HomeHeader({ name, src }) {
   });
 
   return (
-    <View className="bg-white w-full py-5 px-4  rounded-xl mb-3 dark:bg-primary">
+    <View
+      className={`${
+        themeIs === "light" ? "bg-white" : "bg-darkTertiary"
+      } w-full py-5 px-4 rounded-[40px] mb-3`}
+    >
       <View className="w-full mb-2 flex-row justify-between items-center">
         <View className="flex gap-2">
-          <Text className="text-lg font-light dark:text-quinary">
+          <Text
+            className={`${
+              themeIs === "light" ? "text-black" : "text-whiteColor"
+            } text-lg font-light`}
+          >
             Good Day, {name}
           </Text>
-          <Text className="text-5xl font-black text-primaryColor">
+          <Text
+            className={`${
+              themeIs === "light" ? "text-primaryColor" : "text-darkSenary"
+            } text-5xl font-black`}
+          >
             {dayName}
           </Text>
-          <Text className="text-lg font-light text-black">
+          <Text
+            className={`${
+              themeIs === "light" ? "text-black" : "text-whiteColor"
+            } text-lg font-light`}
+          >
             {formattedDate}
           </Text>
         </View>

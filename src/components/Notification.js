@@ -4,8 +4,8 @@ import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
 import Constants from "expo-constants";
 import { Asset } from "expo-asset";
-import { setupNotifChannel } from "../utils/setupNotifChannel";
-import { getPermission } from "../utils/getPermission";
+import setupNotifChannel from "../utils/setupNotifChannel";
+import getPermission from "../utils/getPermission";
 // for testing
 import Button from "../components/forTestingNotification/Button";
 
@@ -142,12 +142,10 @@ export const Notification = () => {
         // invocation of getting the token
         const gettingToken = await getToken();
         setToken(gettingToken);
-        if (!token) {
+        if (!gettingToken) {
           console.error("Failed to get Expo push token.");
           return;
         }
-
-        // console.log("token: ", token);
 
         // invocation of scheduling of notification for time-in
         await schedulePushNotification(
