@@ -36,33 +36,56 @@ const Timelog = () => {
   useEffect(() => {
     if (isFocused) {
       handleScrollToTop(0);
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+          const baseURL = "http://bes.outposter.com.au/api/timelogs";
+          const token = await AsyncStorage.getItem("@auth_token");
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          };
+
+          const response = await axios.get(baseURL, config);
+          setData(response.data);
+        } catch (error) {
+          console.error("Error fetching timelogs:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+      setCurrentPage(1);
     }
   }, [isFocused]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const baseURL = "http://bes.outposter.com.au/api/timelogs";
-        const token = await AsyncStorage.getItem("@auth_token");
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const baseURL = "http://bes.outposter.com.au/api/timelogs";
+  //       const token = await AsyncStorage.getItem("@auth_token");
+  //       const config = {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       };
 
-        const response = await axios.get(baseURL, config);
-        setData(response.data);
-      } catch (error) {
-        console.error("Error fetching timelogs:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       const response = await axios.get(baseURL, config);
+  //       setData(response.data);
+  //     } catch (error) {
+  //       console.error("Error fetching timelogs:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   const flatData = data.data ? data.data.flat() : [];
   const sortedData = flatData.slice().sort((itemA, itemB) => {
