@@ -37,9 +37,11 @@ function SignOut() {
 function PersonalInfo({ iconName, text, content }) {
   return (
     <View className="flex-row p-4 bg-white m-2 rounded-full border-b border-r border-gray-300">
-      <View className="flex-row w-full gap-3 items-center justify-center">
-        <Ionicons name={iconName} size={22} color="#87B0B6" />
-        <Text className="text-base text-primaryColor">{content}</Text>
+      <View className="flex-row w-full  items-center justify-center">
+        <View className="pr-[4]">
+          <Ionicons name={iconName} size={22} color="#87B0B6" />
+        </View>
+        <Text className="pl-[4] text-base text-primaryColor">{content}</Text>
       </View>
     </View>
   );
@@ -62,8 +64,6 @@ export default function Profile() {
     };
     fetchData();
   }, [baseURL]);
-
-  // 2022-02-01T00:00:01-04:00
 
   // const formattedBirthDate = formatDate(data?.birth_date);
   const formattedBirthDate = formatDate("2022-02-01T00:00:01-04:00");
@@ -89,12 +89,6 @@ export default function Profile() {
             <Image
               className="w-[110] h-[110] rounded-full"
               src={`https://bes.outposter.com.au/images/avatars/${data.avatar}`}
-              // src={
-              //   "https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_3.jpg"
-              // }
-              // src={
-              //   "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-              // }
             />
           </View>
         </View>
@@ -126,16 +120,19 @@ export default function Profile() {
               />
             ) : null}
           </View>
-          <View className="justify-end mb-[20] items-center" style={{
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        }}>
+          <View
+            className="justify-end mb-[20] items-center"
+            style={{
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+              elevation: 5,
+            }}
+          >
             <SignOut />
           </View>
         </View>

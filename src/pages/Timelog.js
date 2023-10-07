@@ -6,12 +6,12 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import TimelogTime from "../components/TimelogTime";
 import TimelogItem from "../components/TimelogItem";
 import { useIsFocused } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Timelog = () => {
   const [data, setData] = useState([]);
@@ -92,15 +92,15 @@ const Timelog = () => {
     )
     .map((page) => (
       <TouchableOpacity
-        className={`mx-[2] rounded-full w-[30] h-[30] justify-center items-center ${
+        className={`mx-[2] rounded-full w-[34] h-[34] justify-center items-center ${
           currentPage === page ? "bg-primaryColor" : "bg-transparent"
         }`}
         key={page}
         onPress={() => handlePageClick(page)}
       >
         <Text
-          className={`text-xs ${
-            currentPage === page ? "text-whiteColor" : "text-blackColor"
+          className={`text-base ${
+            currentPage === page ? "text-whiteColor" : "text-primaryColor"
           }`}
         >
           {page}
@@ -116,25 +116,29 @@ const Timelog = () => {
     );
   }
 
-  const renderItem = ({ item, index }) => (
-    <View key={index}>
-      <TimelogItem
-        id={item.id}
-        note={item.note}
-        user_id={item.user_id}
-        created_at={item.created_at}
-        stopped_at={item.stopped_at}
-        started_at={item.started_at}
-      />
-    </View>
-  );
+  const renderItem = ({ item, index }) => {
+    const isLastItem = index === currentItems.length - 1;
+
+    return (
+      <View key={index} style={{ marginBottom: isLastItem ? 60 : 0 }}>
+        <TimelogItem
+          id={item.id}
+          note={item.note}
+          user_id={item.user_id}
+          created_at={item.created_at}
+          stopped_at={item.stopped_at}
+          started_at={item.started_at}
+        />
+      </View>
+    );
+  };
 
   const handlePrevButton = () => {
     handleScrollToTop(420);
-    if (minPageNumberLimit !== 1) {
+    if (currentPage > 1) {
       if (currentPage === minPageNumberLimit) {
         setCurrentPage(currentPage - 1);
-        setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+        setMaxPageNumberLimit(minPageNumberLimit - 1);
         setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
       } else {
         setCurrentPage(currentPage - 1);
@@ -144,11 +148,15 @@ const Timelog = () => {
 
   const handleNextButton = () => {
     handleScrollToTop(420);
-    if (maxPageNumberLimit < pages) {
+    if (currentPage < pages) {
       if (currentPage === maxPageNumberLimit) {
         setCurrentPage(currentPage + 1);
-        setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
         setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+        if (maxPageNumberLimit + pageNumberLimit < pages) {
+          setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+        } else {
+          setMaxPageNumberLimit(pages);
+        }
       } else {
         setCurrentPage(currentPage + 1);
       }
@@ -157,9 +165,9 @@ const Timelog = () => {
 
   const handlePrevSet = () => {
     handleScrollToTop(420);
-    if (minPageNumberLimit !== 1) {
+    if (minPageNumberLimit > 1) {
       setCurrentPage(minPageNumberLimit - 5);
-      setMaxPageNumberLimit(maxPageNumberLimit - pageNumberLimit);
+      setMaxPageNumberLimit(minPageNumberLimit - 1);
       setMinPageNumberLimit(minPageNumberLimit - pageNumberLimit);
     }
   };
@@ -168,50 +176,54 @@ const Timelog = () => {
     handleScrollToTop(420);
     if (maxPageNumberLimit < pages) {
       setCurrentPage(maxPageNumberLimit + 1);
-      setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
       setMinPageNumberLimit(minPageNumberLimit + pageNumberLimit);
+      if (maxPageNumberLimit + pageNumberLimit < pages) {
+        setMaxPageNumberLimit(maxPageNumberLimit + pageNumberLimit);
+      } else {
+        setMaxPageNumberLimit(pages);
+      }
     }
   };
 
   let pageDecrementButton = (
     <TouchableOpacity
-      className="w-[40] h-[40] justify-center items-center"
+      className="mx-[8] justify-center items-center"
       onPress={handlePrevButton}
-      disabled={minPageNumberLimit > 1 ? false : true}
+      disabled={!(currentPage > 1)}
     >
-      <Ionicons
-        name={"chevron-back-outline"}
-        size={24}
+      <FontAwesome
+        name={"angle-left"}
+        size={30}
         color={"#0B646B"}
-        style={{ opacity: minPageNumberLimit > 1 ? 1 : 0.2 }}
+        style={{ opacity: currentPage > 1 ? 1 : 0.2 }}
       />
     </TouchableOpacity>
   );
 
   let pageIncrementButton = (
     <TouchableOpacity
-      className="justify-center items-center"
+      className="mx-[8] justify-center items-center"
       onPress={handleNextButton}
-      disabled={maxPageNumberLimit < pages ? false : true}
+      disabled={!(currentPage < pages)}
     >
-      <Ionicons
-        name={"chevron-forward-outline"}
-        size={24}
+      <FontAwesome
+        name={"angle-right"}
+        size={30}
         color={"#0B646B"}
-        style={{ opacity: maxPageNumberLimit < pages ? 1 : 0.2 }}
+        style={{ opacity: currentPage < pages ? 1 : 0.2 }}
       />
     </TouchableOpacity>
   );
 
   let prevSet = (
     <TouchableOpacity
-      className="justify-center items-center"
+      className="mx-[8] justify-center items-center"
       onPress={handlePrevSet}
-      disabled={minPageNumberLimit > 1 ? false : true}
+      disabled={!(minPageNumberLimit > 1)}
     >
-      <Ionicons
-        name={"chevron-back-outline"}
-        size={24}
+      <FontAwesome
+        name={"angle-double-left"}
+        size={30}
         color={"#0B646B"}
         style={{ opacity: minPageNumberLimit > 1 ? 1 : 0.2 }}
       />
@@ -220,14 +232,14 @@ const Timelog = () => {
 
   let nextSet = (
     <TouchableOpacity
-      className="justify-center items-center"
+      className="mx-[8] justify-center items-center"
       onPress={handleNextSet}
-      disabled={maxPageNumberLimit < pages ? false : true}
+      disabled={!(maxPageNumberLimit < pages)}
     >
-      <Ionicons
-        name={"chevron-forward-outline"}
-        size={24}
-        color={"#0B646B"}
+      <FontAwesome
+        name="angle-double-right"
+        size={30}
+        color="#0B646B"
         style={{ opacity: maxPageNumberLimit < pages ? 1 : 0.2 }}
       />
     </TouchableOpacity>
@@ -261,7 +273,7 @@ const Timelog = () => {
       />
       <View className="items-center ">
         <View className="absolute bottom-0 ">
-          <View className="flex-row justify-center items-center mt-[35] bg-secondaryColor rounded-full px-[20] mb-[5] h-[50]">
+          <View className=" flex-row justify-center items-center mt-[35] bg-secondaryColor rounded-full px-[10] mb-[9] h-[60]">
             {prevSet}
             {pageDecrementButton}
             {renderPageNumbers}
