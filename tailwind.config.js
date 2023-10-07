@@ -16,6 +16,13 @@ module.exports = {
         senaryColor: "#DBE1FC",
         whiteColor: "#F5F5FA",
         blackColor: "#13131A",
+
+        darkPrimary: "#141414",
+        darkSecondary: "#282828",
+        darkTertiary: "#2b2b2b",
+        darkQuarternary: "#424242",
+        darkQuinary: "#2b6673",
+        darkSenary: "#aaedfc",
       },
       fontFamily: {
         titles: ["Kanit", "sans-serif"],

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import {
   View,
   FlatList,
@@ -12,6 +12,7 @@ import TimelogTime from "../components/TimelogTime";
 import TimelogItem from "../components/TimelogItem";
 import { useIsFocused } from "@react-navigation/native";
 import { FontAwesome } from "@expo/vector-icons";
+import ThemeContext from "../store/darkMode/theme-context";
 
 const Timelog = () => {
   const [data, setData] = useState([]);
@@ -23,6 +24,7 @@ const Timelog = () => {
   const [minPageNumberLimit, setMinPageNumberLimit] = useState(1);
   const flatListRef = useRef();
   const isFocused = useIsFocused();
+  const { themeIs } = useContext(ThemeContext);
 
   const handleScrollToTop = (offsetDistance) => {
     if (flatListRef.current) {
@@ -59,6 +61,8 @@ const Timelog = () => {
 
       fetchData();
       setCurrentPage(1);
+      setMinPageNumberLimit(1);
+      setMaxPageNumberLimit(5);
     }
   }, [isFocused]);
 
@@ -269,7 +273,11 @@ const Timelog = () => {
   );
 
   return (
-    <View className="flex-1">
+    <View
+      className={`${
+        themeIs === "light" ? "bg-whiteColor" : "bg-darkPrimary"
+      } flex-1`}
+    >
       <FlatList
         ref={flatListRef}
         data={currentItems}
@@ -277,9 +285,15 @@ const Timelog = () => {
         renderItem={renderItem}
         ListHeaderComponent={() => (
           <>
-            <View className="bg-primaryColor h-[150] rounded-bl-[40]"></View>
+            <View
+              className={`${
+                themeIs === "light"
+                  ? "bg-primaryColor"
+                  : "bg-darkTertiary  border-b border-darkSenary"
+              } h-[150] rounded-bl-[40]`}
+            ></View>
             <View className="mx-4 -mt-24 space-y-4 z-10">
-              <Text className="text-lg font-light tracking-widest text-white uppercase text-center">
+              <Text className="text-lg font-light tracking-widest text-whiteColor uppercase text-center">
                 Summary
               </Text>
               <TimelogTime
@@ -288,7 +302,11 @@ const Timelog = () => {
                 total_late_hrs={data.total_late_hrs}
               />
             </View>
-            <Text className="text-lg font-light tracking-widest text-[#0B646B] p-4 uppercase text-center">
+            <Text
+              className={`${
+                themeIs === "light" ? "text-[#0B646B]" : "text-whiteColor"
+              } text-lg font-light tracking-widest p-4 uppercase text-center`}
+            >
               Time Logs
             </Text>
           </>

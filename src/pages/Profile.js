@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { View, Image, Text, SafeAreaView } from "react-native";
 import { TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
+import DarkModeSwitch from "../components/DarkModeSwitch";
+import ThemeContext from "../store/darkMode/theme-context";
 
 const baseURL = "http://bes.outposter.com.au/api/auth/user";
 
@@ -12,7 +14,6 @@ function SignOut() {
   const navigation = useNavigation();
   const handleLogout = async () => {
     try {
-      console.log("logout");
       const token = await AsyncStorage.removeItem("@auth_token");
       console.log("logout", token);
       navigation.navigate("Login");
@@ -35,13 +36,31 @@ function SignOut() {
 }
 
 function PersonalInfo({ iconName, text, content }) {
+  const { themeIs } = useContext(ThemeContext);
   return (
-    <View className="flex-row p-4 bg-white m-2 rounded-full border-b border-r border-gray-300">
-      <View className="flex-row w-full  items-center justify-center">
-        <View className="pr-[4]">
-          <Ionicons name={iconName} size={22} color="#87B0B6" />
+    <View
+      className={`${
+        themeIs === "light"
+          ? "bg-white border-gray-300"
+          : "bg-darkSecondary border-darkPrimary"
+      } flex-row p-4 m-2 rounded-full border-b border-r `}
+    >
+      <View className="flex-row w-full items-center justify-center">
+        <View className="mr-[8]">
+          <Ionicons
+            name={iconName}
+            size={22}
+            color={`${themeIs === "light" ? "#87B0B6" : "#aaedfc"}`}
+          />
         </View>
-        <Text className="pl-[4] text-base text-primaryColor">{content}</Text>
+
+        <Text
+          className={`${
+            themeIs === "light" ? "text-primaryColor" : "text-whiteColor"
+          } text-base `}
+        >
+          {content}
+        </Text>
       </View>
     </View>
   );
@@ -49,6 +68,7 @@ function PersonalInfo({ iconName, text, content }) {
 
 export default function Profile() {
   const [data, setData] = useState([]);
+  const { themeIs } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,12 +100,44 @@ export default function Profile() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-tertiaryColor justify-end relative">
-      <View className="h-[700] w-[700] rounded-full bg-primaryColor absolute left-[-260] top-[-90]"></View>
-      <View className="h-[690] w-[690] rounded-full bg-secondaryColor absolute left-[50] top-[0]"></View>
-      <View className="flex-[0.80] bg-quinaryColor rounded-t-[50] items-center">
-        <View className="h-[126] w-[126] rounded-full bg-gray-300 top-[-63] justify-center items-center absolute">
-          <View className="h-[120] w-[120] rounded-full bg-primaryColor justify-center items-center absolute">
+    <SafeAreaView
+      className={`flex-1 ${
+        themeIs === "light" ? "bg-tertiaryColor" : "bg-darkPrimary"
+      } justify-end relative`}
+    >
+      {themeIs === "light" && (
+        <>
+          <View className="h-[700] w-[700] rounded-full bg-primaryColor absolute left-[-260] top-[-90]"></View>
+          <View className="h-[690] w-[690] rounded-full bg-secondaryColor absolute left-[50] top-[0]"></View>
+        </>
+      )}
+      <DarkModeSwitch />
+      <View
+        className={`flex-[0.80] ${
+          themeIs === "light"
+            ? "bg-quinaryColor"
+            : "bg-darkTertiary border border-darkSenary"
+        } rounded-t-[50] items-center`}
+      >
+        <View
+          className={`
+          ${
+            themeIs === "light"
+              ? "bg-gray-300 h-[126] w-[126]"
+              : "bg-darkSenary h-[123] w-[123] "
+          }
+            rounded-full 
+            top-[-63] 
+            justify-center 
+            items-center 
+            absolute
+          `}
+        >
+          <View
+            className={`${
+              themeIs === "light" ? "bg-primaryColor" : "bg-darkTertiary"
+            } h-[120] w-[120] rounded-full justify-center items-center absolute`}
+          >
             <Image
               className="w-[110] h-[110] rounded-full"
               src={`https://bes.outposter.com.au/images/avatars/${data.avatar}`}
@@ -93,10 +145,18 @@ export default function Profile() {
           </View>
         </View>
         <View className="mt-[70] mb-[20]">
-          <Text className="text-primaryColor text-4xl font-black text-center mt-3">
+          <Text
+            className={`${
+              themeIs === "light" ? "text-primaryColor" : "text-whiteColor"
+            } text-4xl font-black text-center mt-3`}
+          >
             {data.name}
           </Text>
-          <Text className="text-blackColor text-md font-light text-center uppercase tracking-widest">
+          <Text
+            className={`${
+              themeIs === "light" ? "text-blackColor " : "text-darkSenary"
+            } text-md font-light text-center uppercase tracking-widest`}
+          >
             {data.position}
           </Text>
         </View>

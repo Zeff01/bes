@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Home from "../pages/Home";
 import Timelog from "../pages/Timelog";
 import Profile from "../pages/Profile";
+import ThemeContext from "../store/darkMode/theme-context";
 
 const Tab = createBottomTabNavigator();
 
 export default function BottomTabs() {
+  const { themeIs } = useContext(ThemeContext);
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -24,13 +26,20 @@ export default function BottomTabs() {
             iconName = focused ? "ios-person" : "ios-person-outline";
           }
 
-          return <Ionicons name={iconName} size={30} color={"#0B646B"} />;
+          return (
+            <Ionicons
+              name={iconName}
+              size={30}
+              color={themeIs === "light" ? "#0B646B" : "#aaedfc"}
+            />
+          );
         },
         tabBarActiveTintColor: "#0B646B",
         tabBarInactiveTintColor: "#0B646B",
         tabBarStyle: {
           height: 60,
           paddingTop: 12,
+          backgroundColor: themeIs === "light" ? "#F5F5FA" : "#282828",
         },
         tabBarLabel: "",
       })}
