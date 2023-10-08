@@ -160,9 +160,8 @@ const Home = () => {
               shadowRadius: 3.84,
               elevation: 5,
             }}
-            className={`mt-6 w-[180px] py-4 ${
-              isClockIn ? "bg-red-500" : "bg-primaryColor"
-            } rounded-full`}
+            className={`mt-6 w-[180px] py-4 ${isClockIn ? "bg-red-500" : "bg-primaryColor"
+              } rounded-full`}
             onPress={handleClockInOut}
           >
             <Text className="text-white font-bold text-center">

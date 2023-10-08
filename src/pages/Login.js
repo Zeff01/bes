@@ -12,9 +12,12 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ThemeContext from "../store/darkMode/theme-context";
-
 import axios from "axios";
 import * as Notifications from "expo-notifications";
+
+import { Dispatch } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { authActions } from "../redux/authSlice";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,6 +28,7 @@ const Login = () => {
   const [isKeyboardOn, setIsKeyboardOn] = useState(false);
   const navigation = useNavigation();
   const { themeIs } = useContext(ThemeContext);
+  const dispatch = useDispatch();
 
   //For responsiveness of UI when keyboard is on or off
   useEffect(() => {
@@ -108,6 +112,9 @@ const Login = () => {
         await AsyncStorage.setItem("@auth_token", data.success.token);
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
+
+        dispatch(authActions.loginUser());
+
       } catch (error) {
         console.error("Error:z", error);
       }
@@ -183,6 +190,9 @@ const Login = () => {
                 color={themeIs === "light" ? "#2B6673" : "#F5F5FA"}
                 label="Password"
                 placeholder="Password"
+                placeholderTextColor={
+                  themeIs === "light" ? "#808080" : "#F5F5FA"
+                }
                 placeholderTextColor={
                   themeIs === "light" ? "#808080" : "#F5F5FA"
                 }
