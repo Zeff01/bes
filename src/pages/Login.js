@@ -26,7 +26,6 @@ const Login = () => {
   const navigation = useNavigation();
   const { themeIs } = useContext(ThemeContext);
 
-  //For responsiveness of UI when keyboard is on or off
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",

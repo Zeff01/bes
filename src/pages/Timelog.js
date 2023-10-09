@@ -66,31 +66,6 @@ const Timelog = () => {
     }
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const baseURL = "http://bes.outposter.com.au/api/timelogs";
-  //       const token = await AsyncStorage.getItem("@auth_token");
-  //       const config = {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       };
-
-  //       const response = await axios.get(baseURL, config);
-  //       setData(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching timelogs:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
-
   const flatData = data.data ? data.data.flat() : [];
   const sortedData = flatData.slice().sort((itemA, itemB) => {
     const timeA = new Date(itemA.started_at).getTime();

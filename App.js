@@ -5,7 +5,7 @@ import ThemeProvider from "./src/store/darkMode/ThemeProvider";
 export default function App() {
   return (
     <ThemeProvider>
-      {/* <Notification /> */}
+      <Notification />
       <Navigation />
     </ThemeProvider>
   );

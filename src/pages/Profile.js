@@ -196,7 +196,6 @@ export default function Profile() {
             <SignOut />
           </View>
         </View>
-        {/* <View className="h-[100] w-[100] "></View> */}
       </View>
     </SafeAreaView>
   );
