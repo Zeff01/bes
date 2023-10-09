@@ -17,10 +17,9 @@ const authSlice = createSlice({
             state.isLoggedIn = false;
             state.authToken = null; 
             state.email = ''; 
-        },
+        }
     }
 });
 
 export const authActions = authSlice.actions;
-
 export default authSlice;
