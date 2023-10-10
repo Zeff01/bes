@@ -9,6 +9,7 @@ export default function App() {
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     console.log(isLoggedIn);
 
+    //TODO CHANGE 3
     return (
       <ThemeProvider>
         {/* <Notification /> */}
