@@ -9,7 +9,7 @@ export default function App() {
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     console.log(isLoggedIn);
 
-    //TODO Change 1
+    //TODO Change 2
 
     return (
       <ThemeProvider>
