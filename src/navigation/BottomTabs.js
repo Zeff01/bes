@@ -37,9 +37,8 @@ export default function BottomTabs() {
         tabBarActiveTintColor: "#0B646B",
         tabBarInactiveTintColor: "#0B646B",
         tabBarStyle: {
-          height: 70,
-          paddingBottom: 10,
-          paddingTop: 10,
+          height: 60,
+          paddingTop: 12,
           backgroundColor: themeIs === "light" ? "#F5F5FA" : "#282828",
         },
         tabBarLabel: "",
