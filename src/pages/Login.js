@@ -113,7 +113,7 @@ const Login = () => {
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
 
-        dispatch(authActions.loginUser({email: email, authToken: data.success.token}));
+        dispatch(authActions.loginUser());
 
       } catch (error) {
         console.error("Error:z", error);
@@ -193,7 +193,9 @@ const Login = () => {
                 placeholderTextColor={
                   themeIs === "light" ? "#808080" : "#F5F5FA"
                 }
-                
+                placeholderTextColor={
+                  themeIs === "light" ? "#808080" : "#F5F5FA"
+                }
                 secureTextEntry
                 onChangeText={handlePasswordChange}
                 value={password}
