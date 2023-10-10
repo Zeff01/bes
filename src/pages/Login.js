@@ -114,7 +114,7 @@ const Login = () => {
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
 
-        dispatch(authActions.loginUser());
+        dispatch(authActions.loginUser({authToken: data.success.token, email: email }));
 
       } catch (error) {
         console.error("Error:z", error);

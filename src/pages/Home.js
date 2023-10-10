@@ -7,11 +7,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomAnalogClock from "../components/CustomAnalogClock";
 import { formatTime } from "../utils/formatTime";
 import ThemeContext from "../store/darkMode/theme-context";
-import { useSelector } from "react-redux";
 
 // checktokken util func
 import checkToken from "../utils/checkToken";
-// import getToken from "../utils/getToken";
+import getToken from "../utils/getToken";
 
 // custom hooks
 import useAxios from "../hooks/use-axios";
@@ -37,8 +36,7 @@ const Home = () => {
 
   // clock in/out handler
   const handleClockInOut = async () => {
-    // const token = await getToken();
-    const token = useSelector((state) => state.auth.authToken);
+    const token = await getToken();
 
     setIsClockIn(!isClockIn);
     AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));
@@ -78,7 +76,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      // const token = await getToken();
+      const token = await getToken();
 
       try {
         const processData = (objData) => {
