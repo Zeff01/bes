@@ -15,7 +15,6 @@ import ThemeContext from "../store/darkMode/theme-context";
 import axios from "axios";
 import * as Notifications from "expo-notifications";
 
-import { Dispatch } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { authActions } from "../redux/authSlice";
 
@@ -119,6 +118,10 @@ const Login = () => {
         console.error("Error:z", error);
       }
     }
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword'); 
   };
 
   return (
@@ -232,7 +235,7 @@ const Login = () => {
                   Keep me logged in.
                 </Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleForgotPassword}>
                 <Text className="text-secondaryColor text-right text-sm">
                   Forgot Password?
                 </Text>
