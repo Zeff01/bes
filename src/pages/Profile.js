@@ -45,12 +45,14 @@ function PersonalInfo({ iconName, text, content }) {
           : "bg-darkSecondary border-darkPrimary"
       } flex-row p-4 m-2 rounded-full border-b border-r `}
     >
-      <View className="flex-row w-full gap-3 items-center justify-center">
-        <Ionicons
-          name={iconName}
-          size={22}
-          color={`${themeIs === "light" ? "#87B0B6" : "#aaedfc"}`}
-        />
+      <View className="flex-row w-full items-center justify-center">
+        <View className="pr-[8]">
+          <Ionicons
+            name={iconName}
+            size={22}
+            color={`${themeIs === "light" ? "#87B0B6" : "#aaedfc"}`}
+          />
+        </View>
         <Text
           className={`${
             themeIs === "light" ? "text-primaryColor" : "text-whiteColor"
@@ -195,7 +197,6 @@ export default function Profile() {
             <SignOut />
           </View>
         </View>
-        {/* <View className="h-[100] w-[100] "></View> */}
       </View>
     </SafeAreaView>
   );
