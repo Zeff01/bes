@@ -114,12 +114,16 @@ const Login = () => {
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
 
-        dispatch(authActions.loginUser({authToken: data.success.token, email: email }));
+        dispatch(authActions.loginUser({authToken: data.success.token}));
 
       } catch (error) {
         console.error("Error:z", error);
       }
     }
+  };
+
+  const handleForgotPassword = () => {
+    navigation.navigate('ForgotPassword'); 
   };
 
   return (
@@ -233,7 +237,7 @@ const Login = () => {
                   Keep me logged in.
                 </Text>
               </View>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={handleForgotPassword}>
                 <Text className="text-secondaryColor text-right text-sm">
                   Forgot Password?
                 </Text>
