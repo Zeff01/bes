@@ -14,8 +14,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import ThemeContext from "../store/darkMode/theme-context";
 import axios from "axios";
 import * as Notifications from "expo-notifications";
-
-import { Dispatch } from "@reduxjs/toolkit";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { authActions } from "../redux/authSlice";
 
@@ -29,6 +28,8 @@ const Login = () => {
   const navigation = useNavigation();
   const { themeIs } = useContext(ThemeContext);
   const dispatch = useDispatch();
+
+  const token = useSelector((state) => state.auth.authToken);
 
   //For responsiveness of UI when keyboard is on or off
   useEffect(() => {
@@ -113,7 +114,7 @@ const Login = () => {
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
 
-        dispatch(authActions.loginUser());
+        dispatch(authActions.loginUser({authToken: data.success.token, email: email }));
 
       } catch (error) {
         console.error("Error:z", error);

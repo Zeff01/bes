@@ -7,13 +7,18 @@ import store from "./src/redux/store";
 export default function App() {
   const RootApp = () => {
     const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-    console.log(isLoggedIn);
+    const token = useSelector((state) => state.auth.authToken);
+    console.log('Login @App.js ' + isLoggedIn);
+    console.log('Token @App.js ' + token);
 
     return (
-      <ThemeProvider>
-        {/* <Notification /> */}
-        <Navigation />
-      </ThemeProvider>
+      <Provider store={store}>
+        <ThemeProvider>
+          {/* <Notification /> */}
+          <Navigation />
+        </ThemeProvider>
+      </Provider>
+
     );
   }
 
