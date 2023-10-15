@@ -1,9 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import ThemeContext from "../store/darkMode/theme-context";
 
-export default function Task({ task }) {
+export default function Task({
+  task,
+  setTask,
+  index,
+  deleteItem,
+  isEditModalVisible,
+  setIsEditModalVisible,
+  setEditIndex,
+}) {
   const [isChecked, setIsChecked] = useState(false);
   const { themeIs } = useContext(ThemeContext);
 
@@ -57,11 +66,30 @@ export default function Task({ task }) {
           </Text>
         </View>
 
-        <Ionicons
-          name="create-outline"
-          size={20}
-          color={`${themeIs === "light" ? "#87B0B6" : "#2b6673"}`}
-        />
+        <View className="flex-row">
+          <TouchableOpacity
+            onPress={() => {
+              setIsEditModalVisible(!isEditModalVisible);
+              setEditIndex(index);
+              setTask(task);
+            }}
+          >
+            <Ionicons
+              name="create-outline"
+              size={24}
+              color={`${themeIs === "light" ? "#87B0B6" : "#2b6673"}`}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => deleteItem(index)}>
+            <AntDesign
+              className="mx-[10]"
+              name="delete"
+              size={24}
+              color={`${themeIs === "light" ? "#87B0B6" : "#2b6673"}`}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );

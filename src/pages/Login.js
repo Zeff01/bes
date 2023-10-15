@@ -19,8 +19,8 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../redux/authSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("jeronealimpia@gmail.com");
+  const [password, setPassword] = useState("admin1234");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -114,8 +114,7 @@ const Login = () => {
         navigation.navigate("BottomTabs");
         // console.log(data.success.token);
 
-        dispatch(authActions.loginUser({authToken: data.success.token}));
-
+        dispatch(authActions.loginUser({ authToken: data.success.token }));
       } catch (error) {
         console.error("Error:z", error);
       }
@@ -123,7 +122,7 @@ const Login = () => {
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate('ForgotPassword'); 
+    navigation.navigate("ForgotPassword");
   };
 
   return (

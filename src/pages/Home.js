@@ -7,12 +7,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomAnalogClock from "../components/CustomAnalogClock";
 import { formatTime } from "../utils/formatTime";
 import ThemeContext from "../store/darkMode/theme-context";
-
-// checktokken util func
 import checkToken from "../utils/checkToken";
 import getToken from "../utils/getToken";
-
-// custom hooks
 import useAxios from "../hooks/use-axios";
 import useTimer from "../hooks/use-timer";
 
@@ -21,20 +17,16 @@ const BASE_URL = "https://bes.outposter.com.au/api";
 const Home = () => {
   const { themeIs } = useContext(ThemeContext);
   const [data, setData] = useState([]);
+  const [items, setItems] = useState([]);
+  const [task, setTask] = React.useState("");
+  const [isAddModalVisible, setIsAddModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
   const [isClockIn, setIsClockIn] = useState(false);
-  // I put this here to pass it as prop in checkToken utility function. Because, invalid hook call if it's not called within Functional Component/called within simple javascript function/utility function.
   const navigation = useNavigation();
-
-  // - custom hooks -
-  // useTimer hook
   const { second, minute, hour } = useTimer();
-  // useAxios hook
   const { isLoading, error, sendRequest } = useAxios();
-
   const formattedTime = formatTime(hour, minute);
   const key = `${hour}:${minute}:${second}`;
-
-  // clock in/out handler
   const handleClockInOut = async () => {
     const token = await getToken();
 
@@ -42,8 +34,6 @@ const Home = () => {
     AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));
 
     const processData = (objData) => {
-      // this is the data when clicking the handler
-      // checking if we get the data
       console.log("OBJECT DATA FROM CLOCK-IN/OUT HANDLER: ", objData);
     };
 
@@ -60,12 +50,9 @@ const Home = () => {
     );
   };
 
-  // fetching ClockIn/Out status
   const fetchClockInStatus = async () => {
     try {
-      // getting the AsyncStorage status
       const savedStatus = await AsyncStorage.getItem("@clock_in_status");
-      // if the status is not null or has a value then set the ClockIn state to that value.
       if (savedStatus !== null) {
         setIsClockIn(JSON.parse(savedStatus));
       }
@@ -85,7 +72,6 @@ const Home = () => {
           }
         };
 
-        // "GET"
         sendRequest(
           {
             url: `${BASE_URL}/auth/user`,
@@ -105,6 +91,78 @@ const Home = () => {
     fetchClockInStatus();
     fetchData();
   }, [sendRequest]);
+
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const storedItems = await AsyncStorage.getItem("tasks");
+        if (storedItems !== null) {
+          const parsedItems = JSON.parse(storedItems);
+          setItems(parsedItems);
+        } else {
+          setItems([]);
+        }
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  const addItem = async (newItem) => {
+    try {
+      if (task !== "") {
+        setIsAddModalVisible(!isAddModalVisible);
+
+        const currentItems = [newItem, ...items];
+        setItems(currentItems);
+
+        await AsyncStorage.setItem("tasks", JSON.stringify(currentItems));
+      } else {
+        alert("Field is required");
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+      setItems(items);
+      alert(error.message || "Error adding item");
+    }
+    setTask("");
+  };
+
+  const editItem = async (index, updatedItem) => {
+    console.log(index, updatedItem);
+    try {
+      if (updatedItem.task !== "") {
+        setIsEditModalVisible(!isEditModalVisible);
+        const currentItems = [...items];
+        currentItems[index] = updatedItem;
+        setItems(currentItems);
+
+        await AsyncStorage.setItem("tasks", JSON.stringify(currentItems));
+      } else {
+        alert("Field is required");
+      }
+    } catch (error) {
+      console.error("Error updating item:", error);
+      setItems(items);
+      alert(error.message || "Error updating item");
+    }
+    setTask("");
+  };
+
+  const deleteItem = async (index) => {
+    try {
+      const currentItems = [...items];
+      currentItems.splice(index, 1);
+      setItems(currentItems);
+
+      await AsyncStorage.setItem("tasks", JSON.stringify(currentItems));
+    } catch (error) {
+      console.error("Error deleting item:", error);
+      setItems(items);
+    }
+  };
 
   return (
     <ScrollView
@@ -160,8 +218,9 @@ const Home = () => {
               shadowRadius: 3.84,
               elevation: 5,
             }}
-            className={`mt-6 w-[180px] py-4 ${isClockIn ? "bg-red-500" : "bg-primaryColor"
-              } rounded-full`}
+            className={`mt-6 w-[180px] py-4 ${
+              isClockIn ? "bg-red-500" : "bg-primaryColor"
+            } rounded-full`}
             onPress={handleClockInOut}
           >
             <Text className="text-white font-bold text-center">
@@ -171,7 +230,18 @@ const Home = () => {
         </View>
       </View>
       <View>
-        <TaskCard />
+        <TaskCard
+          items={items}
+          addItem={addItem}
+          editItem={editItem}
+          deleteItem={deleteItem}
+          task={task}
+          setTask={setTask}
+          isAddModalVisible={isAddModalVisible}
+          setIsAddModalVisible={setIsAddModalVisible}
+          isEditModalVisible={isEditModalVisible}
+          setIsEditModalVisible={setIsEditModalVisible}
+        />
       </View>
     </ScrollView>
   );
