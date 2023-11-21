@@ -11,6 +11,7 @@ import checkToken from "../utils/checkToken";
 import getToken from "../utils/getToken";
 import useAxios from "../hooks/use-axios";
 import useTimer from "../hooks/use-timer";
+import ClockInOutBtn from "../components/home/clock/ClockInOutBtn";
 
 const BASE_URL = "https://bes.outposter.com.au/api";
 
@@ -27,28 +28,6 @@ const Home = () => {
   const { isLoading, error, sendRequest } = useAxios();
   const formattedTime = formatTime(hour, minute);
   const key = `${hour}:${minute}:${second}`;
-  const handleClockInOut = async () => {
-    const token = await getToken();
-
-    setIsClockIn(!isClockIn);
-    AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));
-
-    const processData = (objData) => {
-      console.log("OBJECT DATA FROM CLOCK-IN/OUT HANDLER: ", objData);
-    };
-
-    sendRequest(
-      {
-        url: `${BASE_URL}/clock`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      },
-      processData
-    );
-  };
 
   const fetchClockInStatus = async () => {
     try {
@@ -207,26 +186,7 @@ const Home = () => {
           >
             {formattedTime}
           </Text>
-          <TouchableOpacity
-            style={{
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}
-            className={`mt-6 w-[180px] py-4 ${
-              isClockIn ? "bg-red-500" : "bg-primaryColor"
-            } rounded-full`}
-            onPress={handleClockInOut}
-          >
-            <Text className="text-white font-bold text-center">
-              {isClockIn ? "CLOCK OUT" : "CLOCK IN"}
-            </Text>
-          </TouchableOpacity>
+          <ClockInOutBtn isClockIn={isClockIn} setIsClockIn={setIsClockIn} />
         </View>
       </View>
       <View>

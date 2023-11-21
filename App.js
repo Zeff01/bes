@@ -1,9 +1,11 @@
 import { Notification } from "./src/components/Notification";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Navigation from "./src/navigation/navigation";
-import ThemeProvider from "./src/store/darkMode/ThemeProvider";
 import { Provider, useSelector } from "react-redux";
 import store from "./src/redux/store";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+// provider
+import ThemeProvider from "./src/store/darkMode/ThemeProvider";
 
 export default function App() {
   const RootApp = () => {

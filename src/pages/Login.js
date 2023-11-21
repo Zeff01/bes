@@ -197,9 +197,6 @@ const Login = () => {
                 placeholderTextColor={
                   themeIs === "light" ? "#808080" : "#F5F5FA"
                 }
-                placeholderTextColor={
-                  themeIs === "light" ? "#808080" : "#F5F5FA"
-                }
                 secureTextEntry
                 onChangeText={handlePasswordChange}
                 value={password}
