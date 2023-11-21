@@ -3,8 +3,11 @@ import { Text, View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import ThemeContext from "../store/darkMode/theme-context";
+import { MARGIN, SIZE, WIDTH } from "../utils/draggable";
+import Animated from "react-native-reanimated";
 
 export default function Task({
+  isSort,
   task,
   setTask,
   index,
@@ -21,13 +24,16 @@ export default function Task({
   };
 
   return (
-    <View
+    <Animated.View
       className={`${
         themeIs === "light"
           ? "bg-white"
           : "bg-darkSecondary border-b border-r border-darkPrimary"
-      } p-4 rounded-lg mx-2 mb-4`}
+      } p-4 rounded-lg mx-2`}
       style={{
+        height: SIZE - MARGIN * 2,
+        width: isSort ? WIDTH - 50 : WIDTH,
+        margin: MARGIN,
         shadowColor: themeIs === "light" ? "#141414" : "#000",
         shadowOffset: {
           width: 0,
@@ -91,6 +97,6 @@ export default function Task({
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 }
