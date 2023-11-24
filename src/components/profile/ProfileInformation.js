@@ -7,11 +7,14 @@ import Info from "./DataInfos/Info";
 import PersonalInfos from "./DataInfos/PersonalInfos";
 
 // api
-import getData from "../api/getData";
+// import getData from "../api/getData";
+
+import { useDataContext } from "../../store/dataContext/DataContext";
 
 const ProfileInformation = ({ themeIs }) => {
-  const { data, isLoading, error } = getData(`${BASE_URL}${GET_USER}`);
-  
+  // const { data, isLoading, error } = getData(`${BASE_URL}${GET_USER}`);
+
+  const { userData: data } = useDataContext();
 
   return (
     <View

@@ -13,11 +13,24 @@ import useAxios from "../hooks/use-axios";
 import useTimer from "../hooks/use-timer";
 import ClockInOutBtn from "../components/home/clock/ClockInOutBtn";
 
+import { GET_USER, GET_TIMELOG } from "@env";
+import { useDataContext } from "../store/dataContext/DataContext";
+import { setupNotification } from "../components/notification/setupNotification";
+
 const BASE_URL = "https://bes.outposter.com.au/api";
 
 const Home = () => {
+  const { fetchData } = useDataContext();
+  setupNotification();
+
+  useEffect(() => {
+    fetchData(GET_USER);
+    fetchData(GET_TIMELOG);
+  }, []);
+
   const { themeIs } = useContext(ThemeContext);
   const [data, setData] = useState([]);
+  // console.log(data);
   const [items, setItems] = useState([]);
   const [task, setTask] = React.useState("");
   const [isAddModalVisible, setIsAddModalVisible] = useState(false);

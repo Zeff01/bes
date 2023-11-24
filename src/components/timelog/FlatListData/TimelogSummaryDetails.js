@@ -9,7 +9,6 @@ const TimelogSummaryDetails = ({ data }) => {
         Summary
       </Text>
       <TimelogTime
-        data={data}
         total_ot_hrs={data.total_ot_hrs}
         total_hrs={data.total_hrs}
         total_late_hrs={data.total_late_hrs}

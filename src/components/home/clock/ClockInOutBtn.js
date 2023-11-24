@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BASE_URL, POST_CLOCK } from "@env";
 import getToken from "../../../utils/getToken";
 import useAxios from "../../../hooks/use-axios";
+import getPermission from "../../../utils/getPermission";
+import * as Notifications from "expo-notifications";
 
-const ClockInOutBtn = ({isClockIn, setIsClockIn}) => {
-//   const [isClockIn, setIsClockIn] = useState(false);
+const CLOCKIN_NOTIF_DATA = {
+  title: "You have clocked in",
+  body: "You have clocked in",
+};
+
+const CLOCKOUT_NOTIF_DATA = {
+  title: "You have clocked out",
+  body: "You have clocked out",
+};
+
+const ClockInOutBtn = ({ isClockIn, setIsClockIn }) => {
+  //   const [isClockIn, setIsClockIn] = useState(false);
   const { isLoading, error, sendRequest } = useAxios();
+
+  useEffect(() => {
+    getPermission();
+  }, []);
 
   const handleClockInOut = async () => {
     const token = await getToken();
+
+    await Notifications.scheduleNotificationAsync({
+      content: !isClockIn ? CLOCKIN_NOTIF_DATA : CLOCKOUT_NOTIF_DATA,
+      trigger: null,
+    }); 
 
     setIsClockIn(!isClockIn);
     AsyncStorage.setItem("@clock_in_status", JSON.stringify(!isClockIn));

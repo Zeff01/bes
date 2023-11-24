@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { View } from "react-native";
-import { BASE_URL, GET_USER } from "@env";
+// import { BASE_URL, GET_USER } from "@env";
 
 // context
 import ThemeContext from "../../../store/darkMode/theme-context";
@@ -9,15 +9,22 @@ import ThemeContext from "../../../store/darkMode/theme-context";
 import TImelogCard from "./TImelogCard";
 
 // api
-import getData from "../../api/getData";
+// import getData from "../../api/getData";
+import { useDataContext } from "../../../store/dataContext/DataContext";
 
 const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
   const { themeIs } = useContext(ThemeContext);
 
-  const { data, isLoading, error } = getData(`${BASE_URL}${GET_USER}`);
+  // const { data, isLoading, error } = getData(`${BASE_URL}${GET_USER}`);
+
+  const { userData: data } = useDataContext();
 
   const formattedTimeIn = String(data.time_in).slice(0, 5);
   const formattedTimeOut = String(data.time_out).slice(0, 5);
+
+  // console.log("TIME-IN: ", data.time_in);
+  // console.log("TIME-OUT: ", data.time_out);
+  // console.log(typeof data.time_in);
 
   return (
     <View className="flex gap-2 w-full mt-2 mb-3">
@@ -50,7 +57,7 @@ const TimelogTime = ({ total_hrs, total_late_hrs, total_ot_hrs }) => {
               ? `${formattedTimeIn} - ${formattedTimeOut}`
               : "00:00 - 00:00"
           }
-          description={"Rendered Time(Hr/s)"}
+          description={"Schedule"}
         />
       </View>
     </View>

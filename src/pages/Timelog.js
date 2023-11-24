@@ -10,13 +10,16 @@ import TimelogData from "../components/timelog/TimelogData";
 // context
 import ThemeContext from "../store/darkMode/theme-context";
 import Flatlist from "../components/timelog/Flatlist";
+import { useDataContext } from "../store/dataContext/DataContext";
 
 const Timelog = () => {
-  const {
-    data,
-    isLoading: loading,
-    error,
-  } = getData(`${BASE_URL}${GET_TIMELOG}`);
+  // const {
+  //   data,
+  //   isLoading: loading,
+  //   error,
+  // } = getData(`${BASE_URL}${GET_TIMELOG}`);
+
+  const { timelogData: data } = useDataContext();
 
   const [currentPage, setCurrentPage] = useState(1);
   // const [itemsPerPage] = useState(10);
